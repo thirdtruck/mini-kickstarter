@@ -1,0 +1,2 @@
+# Ignore gems installed by Bundler
+/vendor
