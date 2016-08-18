@@ -100,8 +100,8 @@ Feature: "back" command
     # TODO: Use a number that passes Luhn-10 below
     Examples:
       | credit_card_number   | response |
-      |  1234567890123456789 |   accept |
-      | 12345678901234567890 |   reject |
+      |  1000000000000000009 |   accept |
+      | 10000000000000000009 |   reject |
 
   # TODO
   #Scenario Outline: Credit card numbers will always be numeric
