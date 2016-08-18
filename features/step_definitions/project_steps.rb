@@ -15,13 +15,16 @@ Given(/^a target dollar amount of "([^"]*)"$/) do |target_dollar_amount|
 end
 
 When(/^the "([^"]*)" command is invoked$/) do |command_name|
-  pending # Write code here that turns the phrase above into concrete actions
+  mini_kickstarter = MiniKickstarter.new
+  @command_response = mini_kickstarter.invoke(command_name,
+                                              project_name: @project_name,
+                                              target_dollar_amount: @target_dollar_amount)
 end
 
 Then(/^Mini Kickstarter should accept the command input$/) do
-  pending # Write code here that turns the phrase above into concrete actions
+  expect(@command_response).to eq('Success')
 end
 
 Then(/^Mini Kickstarter should reject the command input$/) do
-  pending # Write code here that turns the phrase above into concrete actions
+  expect(@command_response).to match(/^ERROR:/)
 end
