@@ -30,7 +30,7 @@ class MiniKickstarter
     if project_name !~ ALPHANUMERIC_WITH_UNDERSCORES_DASHES
       "ERROR: Projects should be alphanumeric. Undersores or dashes are allowed."
     elsif project_name.length < 4 || project_name.length > 20
-      "ERROR: Projects should be no shorter than 3 characters but no longer than 20 characters."
+      "ERROR: Projects should be no shorter than 4 characters but no longer than 20 characters."
     elsif target_dollar_amount =~ /\$/
       "ERROR: Target dollar amount should not use the $ currency symbol."
     elsif target_dollar_amount !~ JUST_DOLLARS_AND_CENTS
@@ -41,6 +41,27 @@ class MiniKickstarter
   end
 
   def invoke_back(command_params)
-    "ERROR: Unimplemented command."
+    given_name = command_params[:given_name]
+    project_name = command_params[:project_name]
+    credit_card_number = command_params[:credit_card_number]
+    backing_amount = command_params[:backing_amount]
+
+    if given_name !~ ALPHANUMERIC_WITH_UNDERSCORES_DASHES
+      "ERROR: Given names should be alphanumeric. Undersores or dashes are allowed."
+    elsif given_name.length < 4 || given_name.length > 20
+      "ERROR: Given names should be no shorter than 4 characters but no longer than 20 characters."
+    elsif project_name !~ ALPHANUMERIC_WITH_UNDERSCORES_DASHES
+      "ERROR: Projects should be alphanumeric. Undersores or dashes are allowed."
+    elsif project_name.length < 4 || project_name.length > 20
+      "ERROR: Projects should be no shorter than 4 characters but no longer than 20 characters."
+    elsif credit_card_number.length > 19
+      "ERROR: Credit card number should be no more than 19 characters."
+    elsif backing_amount =~ /\$/
+      "ERROR: Target dollar amount should not use the $ currency symbol."
+    elsif backing_amount !~ JUST_DOLLARS_AND_CENTS
+      "ERROR: Target dollar amount should include both dollars and cents."
+    else
+      "Success"
+    end
   end
 end

@@ -103,3 +103,4 @@ Feature: "back" command
       | credit_card_number   | response |
       |  1234567890123456789 |   accept |
       | 12345678901234567890 |   reject |
+
