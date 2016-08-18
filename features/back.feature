@@ -89,7 +89,6 @@ Feature: "back" command
       |     1. |   reject |
       |     .7 |   reject |
 
-  # Testing credit card numbers with only digits (e.g. no dashes) for simplicity's sake.
   Scenario Outline: Credit card numbers may be up to 19 characters long
     Given a valid given name
     And a project with a valid name
@@ -103,4 +102,28 @@ Feature: "back" command
       | credit_card_number   | response |
       |  1234567890123456789 |   accept |
       | 12345678901234567890 |   reject |
+
+  # TODO
+  #Scenario Outline: Credit card numbers will always be numeric
+
+  Scenario Outline: Credit card numbers should be validated using Luhn-10
+    Given a valid given name
+    And a project with a valid name
+    And a credit card number of "<credit_card_number>"
+    And a valid backing amount
+    When the "back" command is invoked
+    Then Mini Kickstarter should <response> the command input
+
+    Examples:
+      | credit_card_number   | response |
+      |          79927398713 |   accept |
+      |          79927398710 |   reject |
+      |          79927398711 |   reject |
+      |          79927398712 |   reject |
+      |          79927398714 |   reject |
+      |          79927398715 |   reject |
+      |          79927398716 |   reject |
+      |          79927398717 |   reject |
+      |          79927398718 |   reject |
+      |          79927398719 |   reject |
 
