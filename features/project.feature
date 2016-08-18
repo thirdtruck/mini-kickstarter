@@ -6,6 +6,7 @@ Feature: "project" command
     When the "project" command is invoked
     Then Mini Kickstarter should <response> the command input
 
+    # TODO: Perform more thorough checks of Unicode strings.
     Examples:
       | project | response |
       | example |   accept |
@@ -13,7 +14,9 @@ Feature: "project" command
       | 3xampl3 |   accept |
       | ex@mpl3 |   reject |
       | $$$$$$$ |   reject |
-      |  thí dụ |   accept |
+      |  thí_dụ |   accept |
+      |     ___ |   reject |
+      |     --- |   reject |
 
   Scenario Outline: Projects can include underscores or dashes
     Given a project called "<project>"
@@ -37,12 +40,15 @@ Feature: "project" command
     When the "project" command is invoked
     Then Mini Kickstarter should <response> the command input
 
+    # TODO: Perform more thorough checks of Unicode strings.
     Examples:
       | project               | response |
       | exa                   |   reject |
       | exam                  |   accept |
       | 20ampleexampleexampl  |   accept |
       | 21ampleexampleexample |   reject |
+      | thí                   |   reject |
+      | thí_dụthí_dụthí_dụthí |   reject |
 
   Scenario: Target dollar amounts should accept both dollars and cents
     Given a project with a valid name
