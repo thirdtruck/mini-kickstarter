@@ -1,23 +1,24 @@
 Given(/^a valid given name$/) do
-  pending # Write code here that turns the phrase above into concrete actions
+  @given_name = "example"
 end
 
 Given(/^a valid credit card number$/) do
-  pending # Write code here that turns the phrase above into concrete actions
+	# TODO: Use a number that passes Luhn-10 below
+	@credit_card_number = "1234567890123456789"
 end
 
 Given(/^a valid backing amount$/) do
-  pending # Write code here that turns the phrase above into concrete actions
+  @backing_amount = "9.95"
 end
 
 Given(/^a given name of "([^"]*)"$/) do |given_name|
-  pending # Write code here that turns the phrase above into concrete actions
+  @given_name = given_name
 end
 
-Given(/^a credit card number of "([^"]*)"$/) do |arg1|
-  pending # Write code here that turns the phrase above into concrete actions
+Given(/^a credit card number of "([^"]*)"$/) do |credit_card_number|
+  @credit_card_number = credit_card_number
 end
 
-Given(/^a backing amount of "([^"]*)"$/) do |arg1|
-  pending # Write code here that turns the phrase above into concrete actions
+Given(/^a backing amount of "([^"]*)"$/) do |backing_amount|
+  @backing_amount = backing_amount
 end
