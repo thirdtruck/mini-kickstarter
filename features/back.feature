@@ -97,14 +97,24 @@ Feature: "back" command
     When the "back" command is invoked
     Then Mini Kickstarter should <response> the command input
 
-    # TODO: Use a number that passes Luhn-10 below
     Examples:
       | credit_card_number   | response |
       |  1000000000000000009 |   accept |
       | 10000000000000000009 |   reject |
 
-  # TODO
-  #Scenario Outline: Credit card numbers will always be numeric
+  Scenario Outline: Credit card numbers will always be numeric
+    Given a valid given name
+    And a project with a valid name
+    And a credit card number of "<credit_card_number>"
+    And a valid backing amount
+    When the "back" command is invoked
+    Then Mini Kickstarter should respond to the command input with the message "<message>"
+
+    # Getting more specific here to make sure we're rejecting the number for the right reason.
+    Examples:
+      | credit_card_number   | message                                                  |
+      |          79927398713 |                                                  Success |
+      |        799-2739-8713 |   ERROR: Credit card numbers should contain only digits. |
 
   Scenario Outline: Credit card numbers should be validated using Luhn-10
     Given a valid given name
