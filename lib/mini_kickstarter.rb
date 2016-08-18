@@ -1,5 +1,6 @@
 class MiniKickstarter
   # TODO: Move checks into the option parser. Take only pre-vetted input.
+  NUMERIC = /\A[0-9]+\z/
   ALPHANUMERIC_WITH_UNDERSCORES_DASHES = /\A[[:alnum:]_-]*[[:alnum:]]+[[:alnum:]_-]*\z/
   JUST_DOLLARS_AND_CENTS = /\A([1-9][0-9]*|[0-9])\.[0-9]{2}\z/
 
@@ -56,6 +57,8 @@ class MiniKickstarter
       "ERROR: Projects should be no shorter than 4 characters but no longer than 20 characters."
     elsif credit_card_number.length > 19
       "ERROR: Credit card number should be no more than 19 characters."
+    elsif credit_card_number !~ NUMERIC
+      "ERROR: Credit card numbers should contain only digits."
     elsif ! valid_luhn_10_sequence?(credit_card_number.split(//).map(&:to_i))
       "ERROR: Invalid credit card number." # TODO: What's a better error message?
     elsif backing_amount =~ /\$/
