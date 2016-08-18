@@ -3,8 +3,8 @@ Given(/^a valid given name$/) do
 end
 
 Given(/^a valid credit card number$/) do
-	# TODO: Use a number that passes Luhn-10 below
-	@credit_card_number = "1234567890123456789"
+  # TODO: Use a number that passes Luhn-10 below
+  @credit_card_number = "1234567890123456789"
 end
 
 Given(/^a valid backing amount$/) do
