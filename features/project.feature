@@ -61,3 +61,16 @@ Feature: "project" command
     And a target dollar amount of "$1000000.00"
     When the "project" command is invoked
     Then Mini Kickstarter should reject the command input
+
+  Scenario Outline: Target dollar amounts should not accept amounts with missing or extra digits
+    Given a project with a valid name
+    And a target dollar amount of "<amount>"
+    When the "project" command is invoked
+    Then Mini Kickstarter should <response> the command input
+
+    Examples:
+      | amount | response |
+      |  01.07 |   reject |
+      |    0.7 |   reject |
+      |     1. |   reject |
+      |     .7 |   reject |
