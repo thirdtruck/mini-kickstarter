@@ -50,6 +50,7 @@ Feature: "project" command
       | thí                   |   reject |
       | thí_dụthí_dụthí_dụthí |   reject |
 
+  # TODO: Clarify whether this MUST accept BOTH dollars and cents or whether just dollars would suffice.
   Scenario: Target dollar amounts should accept both dollars and cents
     Given a project with a valid name
     And a target dollar amount of "1000000.00"
