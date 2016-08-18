@@ -6,3 +6,8 @@ Then(/^Mini Kickstarter should reject the command input$/) do
   puts @command_response
   expect(@command_response).to match(/^ERROR:/)
 end
+
+Then(/^Mini Kickstarter should respond to the command input with the message "([^"]*)"$/) do |message|
+  puts @command_response
+  expect(@command_response).to eq(message)
+end
