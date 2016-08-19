@@ -1,5 +1,8 @@
 Feature: "back" command
 
+  Background:
+    Given a project has been created
+
   Scenario Outline: Given names should be alphanumeric
     Given a given name of "<name>"
     And a project with a valid name
