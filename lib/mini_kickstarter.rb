@@ -56,7 +56,7 @@ class MiniKickstarter
     elsif project_name.length < 4 || project_name.length > 20
       "ERROR: Projects should be no shorter than 4 characters but no longer than 20 characters."
     elsif credit_card_number.length > 19
-      "ERROR: Credit card number should be no more than 19 characters."
+      "ERROR: Credit card numbers should be no more than 19 characters."
     elsif credit_card_number !~ NUMERIC
       "ERROR: Credit card numbers should contain only digits."
     elsif ! valid_luhn_10_sequence?(credit_card_number.split(//).map(&:to_i))
