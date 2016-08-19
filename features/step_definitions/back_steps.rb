@@ -23,6 +23,14 @@ Given(/^a backing amount of "([^"]*)"$/) do |backing_amount|
   @backing_amount = backing_amount
 end
 
+Given(/^the credit card number "([^"]*)" has already been entered$/) do |credit_card_number|
+  step %Q{a valid given name}
+  step %Q{a project with a valid name}
+  step %Q{a credit card number of "#{credit_card_number}"}
+  step %Q{a valid backing amount}
+  step %Q{the "back" command is invoked}
+end
+
 When(/^the "back" command is invoked$/) do
   mini_kickstarter = MiniKickstarter.new
   @command_response = mini_kickstarter.invoke("back",
