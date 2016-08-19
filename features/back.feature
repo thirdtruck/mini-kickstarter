@@ -151,3 +151,12 @@ Feature: "back" command
       |          79927398710 | ERROR: Invalid credit card number.                               |
       |        799-2739-8713 | ERROR: Credit card numbers should contain only digits.           |
       | 10000000000000000009 | ERROR: Credit card numbers should be no more than 19 characters. |
+
+  Scenario: Credit card numbers that have already been added will display an error
+    Given a valid given name
+    And a project with a valid name
+    And a credit card number of "79927398713"
+    And a valid backing amount
+    And the credit card number "79927398713" has already been entered
+    When the "back" command is invoked
+    Then Mini Kickstarter should respond to the command input with the message "ERROR: The credit card number has already been entered."
