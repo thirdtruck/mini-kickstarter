@@ -29,7 +29,7 @@ class MiniKickstarter
 
     # TODO: Do we need to use #mb_chars here? Doesn't seem to be the case.
     if project_name !~ ALPHANUMERIC_WITH_UNDERSCORES_DASHES
-      "ERROR: Projects should be alphanumeric. Undersores or dashes are allowed."
+      "ERROR: Projects should be alphanumeric. Underscores or dashes are allowed."
     elsif project_name.length < 4 || project_name.length > 20
       "ERROR: Projects should be no shorter than 4 characters but no longer than 20 characters."
     elsif target_dollar_amount =~ /\$/
@@ -48,11 +48,11 @@ class MiniKickstarter
     backing_amount = command_params[:backing_amount]
 
     if given_name !~ ALPHANUMERIC_WITH_UNDERSCORES_DASHES
-      "ERROR: Given names should be alphanumeric. Undersores or dashes are allowed."
+      "ERROR: Given names should be alphanumeric. Underscores or dashes are allowed."
     elsif given_name.length < 4 || given_name.length > 20
       "ERROR: Given names should be no shorter than 4 characters but no longer than 20 characters."
     elsif project_name !~ ALPHANUMERIC_WITH_UNDERSCORES_DASHES
-      "ERROR: Projects should be alphanumeric. Undersores or dashes are allowed."
+      "ERROR: Projects should be alphanumeric. Underscores or dashes are allowed."
     elsif project_name.length < 4 || project_name.length > 20
       "ERROR: Projects should be no shorter than 4 characters but no longer than 20 characters."
     elsif credit_card_number.length > 19
