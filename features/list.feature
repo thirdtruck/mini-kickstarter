@@ -5,5 +5,7 @@ Feature: "list" command
     When the "list" command is invoked
     Then Mini Kickstarter should respond with:
     """
-    listing!
+    -- John backed for $50
+    -- Jane backed for $50
+    Awesome_Sauce needs $400 more dollars to be successful
     """
