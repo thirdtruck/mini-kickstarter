@@ -4,13 +4,13 @@ class MiniKickstarter
   ALPHANUMERIC_WITH_UNDERSCORES_DASHES = /\A[[:alnum:]_-]*[[:alnum:]]+[[:alnum:]_-]*\z/
   JUST_DOLLARS_AND_CENTS = /\A([1-9][0-9]*|[0-9])\.[0-9]{2}\z/
 
-  def invoke(command_name, command_params)
+  def invoke(db, command_name, command_params)
     # TODO: Compile all errors before reporting instead of reporting only the first match. Better UX.
     case command_name
     when "project"
-      invoke_project(command_params)
+      invoke_project(db, command_params)
     when "back"
-      invoke_back(command_params)
+      invoke_back(db, command_params)
     else
       "ERROR: Unrecognized command."
     end
@@ -18,7 +18,7 @@ class MiniKickstarter
 
   private
 
-  def invoke_project(command_params)
+  def invoke_project(db, command_params)
     project_name = command_params[:project_name]
     target_dollar_amount = command_params[:target_dollar_amount]
 
@@ -41,7 +41,7 @@ class MiniKickstarter
     end
   end
 
-  def invoke_back(command_params)
+  def invoke_back(db, command_params)
     given_name = command_params[:given_name]
     project_name = command_params[:project_name]
     credit_card_number = command_params[:credit_card_number]
@@ -66,7 +66,12 @@ class MiniKickstarter
     elsif backing_amount !~ JUST_DOLLARS_AND_CENTS
       "ERROR: Target dollar amount should include both dollars and cents."
     else
-      "Success"
+      begin
+        db.back_project(given_name, 0, credit_card_number, backing_amount)
+        "Success"
+      rescue MiniKickstarterDB::ProjectAlreadyBackedError
+        return "ERROR: The credit card number has already been entered."
+      end
     end
   end
 
