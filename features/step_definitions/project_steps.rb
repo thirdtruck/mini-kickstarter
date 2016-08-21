@@ -15,6 +15,8 @@ Given(/^a target dollar amount of "([^"]*)"$/) do |target_dollar_amount|
 end
 
 Given(/^a project has been created$/) do
+  @db = MiniKickstarterDB.new(':memory:')
+
   steps %{
     a project with a valid name
     a valid target dollar amount
@@ -24,7 +26,8 @@ end
 
 When(/^the "project" command is invoked$/) do
   mini_kickstarter = MiniKickstarter.new
-  @command_response = mini_kickstarter.invoke("project",
+  @command_response = mini_kickstarter.invoke(@db,
+                                              "project",
                                               project_name: @project_name,
                                               target_dollar_amount: @target_dollar_amount)
 end
