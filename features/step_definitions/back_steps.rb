@@ -41,10 +41,14 @@ end
 
 When(/^the "back" command is invoked$/) do
   mini_kickstarter = MiniKickstarter.new
-  @command_response = mini_kickstarter.invoke(@db,
-                                              "back",
-                                              given_name: @given_name,
-                                              project_name: @project_name,
-                                              credit_card_number: @credit_card_number,
-                                              backing_amount: @backing_amount)
+  begin
+    @command_response = mini_kickstarter.invoke(@db,
+                                                "back",
+                                                given_name: @given_name,
+                                                project_name: @project_name,
+                                                credit_card_number: @credit_card_number,
+                                                backing_amount: @backing_amount)
+  rescue MiniKickstarter::InvalidCommandParameterError => e
+    @command_response = "ERROR: #{e.message}"
+  end
 end

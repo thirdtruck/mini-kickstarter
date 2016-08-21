@@ -26,8 +26,12 @@ end
 
 When(/^the "project" command is invoked$/) do
   mini_kickstarter = MiniKickstarter.new
-  @command_response = mini_kickstarter.invoke(@db,
-                                              "project",
-                                              project_name: @project_name,
-                                              target_dollar_amount: @target_dollar_amount)
+  begin
+    @command_response = mini_kickstarter.invoke(@db,
+                                                "project",
+                                                project_name: @project_name,
+                                                target_dollar_amount: @target_dollar_amount)
+  rescue MiniKickstarter::InvalidCommandParameterError => e
+    @command_response = "ERROR: #{e.message}"
+  end
 end
