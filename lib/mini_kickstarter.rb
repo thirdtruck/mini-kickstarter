@@ -12,8 +12,11 @@ class MiniKickstarter
     when "back"
       invoke_back(db, command_params)
     else
-      "ERROR: Unrecognized command."
+      raise InvalidCommandParameterError, "Unrecognized command."
     end
+  end
+
+  class InvalidCommandParameterError < StandardError
   end
 
   private
@@ -29,13 +32,13 @@ class MiniKickstarter
 
     # TODO: Do we need to use #mb_chars here? Doesn't seem to be the case.
     if project_name !~ ALPHANUMERIC_WITH_UNDERSCORES_DASHES
-      "ERROR: Projects should be alphanumeric. Underscores or dashes are allowed."
+      raise InvalidCommandParameterError, "Projects should be alphanumeric. Underscores or dashes are allowed."
     elsif project_name.length < 4 || project_name.length > 20
-      "ERROR: Projects should be no shorter than 4 characters but no longer than 20 characters."
+      raise InvalidCommandParameterError, "Projects should be no shorter than 4 characters but no longer than 20 characters."
     elsif target_dollar_amount =~ /\$/
-      "ERROR: Target dollar amount should not use the $ currency symbol."
+      raise InvalidCommandParameterError, "Target dollar amount should not use the $ currency symbol."
     elsif target_dollar_amount !~ JUST_DOLLARS_AND_CENTS
-      "ERROR: Target dollar amount should include both dollars and cents."
+      raise InvalidCommandParameterError, "Target dollar amount should include both dollars and cents."
     else
       "Success"
     end
@@ -48,29 +51,29 @@ class MiniKickstarter
     backing_amount = command_params[:backing_amount]
 
     if given_name !~ ALPHANUMERIC_WITH_UNDERSCORES_DASHES
-      "ERROR: Given names should be alphanumeric. Underscores or dashes are allowed."
+      raise InvalidCommandParameterError, "Given names should be alphanumeric. Underscores or dashes are allowed."
     elsif given_name.length < 4 || given_name.length > 20
-      "ERROR: Given names should be no shorter than 4 characters but no longer than 20 characters."
+      raise InvalidCommandParameterError, "Given names should be no shorter than 4 characters but no longer than 20 characters."
     elsif project_name !~ ALPHANUMERIC_WITH_UNDERSCORES_DASHES
-      "ERROR: Projects should be alphanumeric. Underscores or dashes are allowed."
+      raise InvalidCommandParameterError, "Projects should be alphanumeric. Underscores or dashes are allowed."
     elsif project_name.length < 4 || project_name.length > 20
-      "ERROR: Projects should be no shorter than 4 characters but no longer than 20 characters."
+      raise InvalidCommandParameterError, "Projects should be no shorter than 4 characters but no longer than 20 characters."
     elsif credit_card_number.length > 19
-      "ERROR: Credit card numbers should be no more than 19 characters."
+      raise InvalidCommandParameterError, "Credit card numbers should be no more than 19 characters."
     elsif credit_card_number !~ NUMERIC
-      "ERROR: Credit card numbers should contain only digits."
+      raise InvalidCommandParameterError, "Credit card numbers should contain only digits."
     elsif ! valid_luhn_10_sequence?(credit_card_number.split(//).map(&:to_i))
-      "ERROR: Invalid credit card number." # TODO: What's a better error message?
+      raise InvalidCommandParameterError, "Invalid credit card number." # TODO: What's a better error message?
     elsif backing_amount =~ /\$/
-      "ERROR: Target dollar amount should not use the $ currency symbol."
+      raise InvalidCommandParameterError, "Target dollar amount should not use the $ currency symbol."
     elsif backing_amount !~ JUST_DOLLARS_AND_CENTS
-      "ERROR: Target dollar amount should include both dollars and cents."
+      raise InvalidCommandParameterError, "Target dollar amount should include both dollars and cents."
     else
       begin
         db.back_project(given_name, 0, credit_card_number, backing_amount)
         "Success"
       rescue MiniKickstarterDB::ProjectAlreadyBackedError
-        return "ERROR: The credit card number has already been entered."
+        return raise InvalidCommandParameterError, "The credit card number has already been entered."
       end
     end
   end
