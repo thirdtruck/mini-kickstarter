@@ -11,6 +11,8 @@ class MiniKickstarter
       invoke_project(db, command_params)
     when "back"
       invoke_back(db, command_params)
+    when "list"
+      invoke_list(db, command_params)
     else
       "ERROR: Unrecognized command."
     end
@@ -73,6 +75,10 @@ class MiniKickstarter
         return "ERROR: The credit card number has already been entered."
       end
     end
+  end
+
+  def invoke_list(db, command_params)
+    db.list_projects
   end
 
   def valid_luhn_10_sequence?(digits)

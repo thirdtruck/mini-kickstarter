@@ -27,6 +27,11 @@ class MiniKickstarterDB
                 backing_amount)
   end
 
+  def list_projects
+    # TODO: WIP
+    rows = @db.execute(%Q{select * from projects})
+  end
+
   private
 
   def initialize_db
