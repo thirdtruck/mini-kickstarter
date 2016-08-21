@@ -1,0 +1,9 @@
+Feature: "list" command
+
+  Scenario: Display a project's backers and backed amounts
+    Given a project has been backed
+    When the "list" command is invoked
+    Then Mini Kickstarter should respond with:
+    """
+    listing!
+    """

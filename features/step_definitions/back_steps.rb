@@ -31,6 +31,14 @@ Given(/^the credit card number "([^"]*)" has already been entered$/) do |credit_
   step %Q{the "back" command is invoked}
 end
 
+Given(/^a project has been backed$/) do
+  step %Q{a project has been created}
+  step %Q{a valid given name}
+  step %Q{a valid credit card number}
+  step %Q{a valid backing amount}
+  step %Q{the "back" command is invoked}
+end
+
 When(/^the "back" command is invoked$/) do
   mini_kickstarter = MiniKickstarter.new
   @command_response = mini_kickstarter.invoke(@db,
