@@ -9,19 +9,19 @@ Feature: "back" command
     And a valid credit card number
     And a valid backing amount
     When the "back" command is invoked
-    Then Mini Kickstarter should <response> the command input
+    Then Mini Kickstarter should respond with "<message>"
 
     # TODO: Perform more thorough checks of Unicode strings.
     Examples:
-      | name    | response |
-      | example |   accept |
-      | EXAMPLE |   accept |
-      | 3xampl3 |   accept |
-      | ex@mpl3 |   reject |
-      | $$$$$$$ |   reject |
-      |  thí_dụ |   accept |
-      |     ___ |   reject |
-      |     --- |   reject |
+      | name    | message                                                                       |
+      | example |                                                                       Success |
+      | EXAMPLE |                                                                       Success |
+      | 3xampl3 |                                                                       Success |
+      | ex@mpl3 | ERROR: Given names should be alphanumeric. Underscores or dashes are allowed. |
+      | $$$$$$$ | ERROR: Given names should be alphanumeric. Underscores or dashes are allowed. |
+      |  thí_dụ |                                                                       Success |
+      |     ___ | ERROR: Given names should be alphanumeric. Underscores or dashes are allowed. |
+      |     --- | ERROR: Given names should be alphanumeric. Underscores or dashes are allowed. |
 
   Scenario Outline: Given names can include underscores or dashes
     Given a given name of "<name>"
@@ -29,17 +29,17 @@ Feature: "back" command
     And a valid credit card number
     And a valid backing amount
     When the "back" command is invoked
-    Then Mini Kickstarter should <response> the command input
+    Then Mini Kickstarter should respond with "<message>"
 
     Examples:
-      | name    | response |
-      | ex_mple |   accept |
-      | _xample |   accept |
-      | exampl_ |   accept |
-      | ex-mple |   accept |
-      | -xample |   accept |
-      | exampl- |   accept |
-      | e_amp-e |   accept |
+      | name    | message   |
+      | ex_mple |   Success |
+      | _xample |   Success |
+      | exampl_ |   Success |
+      | ex-mple |   Success |
+      | -xample |   Success |
+      | exampl- |   Success |
+      | e_amp-e |   Success |
 
   Scenario Outline: Projects must be between 4 and 20 characters long
     Given a given name of "<name>"
@@ -47,17 +47,17 @@ Feature: "back" command
     And a valid credit card number
     And a valid backing amount
     When the "back" command is invoked
-    Then Mini Kickstarter should <response> the command input
+    Then Mini Kickstarter should respond with "<message>"
 
     # TODO: Perform more thorough checks of Unicode strings.
     Examples:
-      | name                  | response |
-      | exa                   |   reject |
-      | exam                  |   accept |
-      | 20ampleexampleexampl  |   accept |
-      | 21ampleexampleexample |   reject |
-      | thí                   |   reject |
-      | thí_dụthí_dụthí_dụthí |   reject |
+      | name                  | message                                                                                     |
+      | exa                   | ERROR: Given names should be no shorter than 4 characters but no longer than 20 characters. |
+      | exam                  |                                                                                     Success |
+      | 20ampleexampleexampl  |                                                                                     Success |
+      | 21ampleexampleexample | ERROR: Given names should be no shorter than 4 characters but no longer than 20 characters. |
+      | thí                   | ERROR: Given names should be no shorter than 4 characters but no longer than 20 characters. |
+      | thí_dụthí_dụthí_dụthí | ERROR: Given names should be no shorter than 4 characters but no longer than 20 characters. |
 
   # TODO: Clarify whether this MUST accept BOTH dollars and cents or whether just dollars would suffice.
   Scenario: Backing amounts should accept both dollars and cents
@@ -75,7 +75,7 @@ Feature: "back" command
     And a valid credit card number
     And a backing amount of "$1000000.00"
     When the "back" command is invoked
-    Then Mini Kickstarter should reject the command input
+    Then Mini Kickstarter should respond with "ERROR: Target dollar amount should not use the $ currency symbol."
 
   Scenario Outline: Backing amounts should not accept amounts with missing or extra digits
     Given a valid given name
@@ -83,14 +83,14 @@ Feature: "back" command
     And a valid credit card number
     And a backing amount of "<amount>"
     When the "back" command is invoked
-    Then Mini Kickstarter should <response> the command input
+    Then Mini Kickstarter should respond with "<message>"
 
     Examples:
-      | amount | response |
-      |  01.07 |   reject |
-      |    0.7 |   reject |
-      |     1. |   reject |
-      |     .7 |   reject |
+      | amount | message                                                            |
+      |  01.07 | ERROR: Target dollar amount should include both dollars and cents. |
+      |    0.7 | ERROR: Target dollar amount should include both dollars and cents. |
+      |     1. | ERROR: Target dollar amount should include both dollars and cents. |
+      |     .7 | ERROR: Target dollar amount should include both dollars and cents. |
 
   Scenario Outline: Credit card numbers may be up to 19 characters long
     Given a valid given name
@@ -98,12 +98,12 @@ Feature: "back" command
     And a credit card number of "<credit_card_number>"
     And a valid backing amount
     When the "back" command is invoked
-    Then Mini Kickstarter should <response> the command input
+    Then Mini Kickstarter should respond with "<message>"
 
     Examples:
-      | credit_card_number   | response |
-      |  1000000000000000009 |   accept |
-      | 10000000000000000009 |   reject |
+      | credit_card_number   | message                                                          |
+      |  1000000000000000009 |                                                          Success |
+      | 10000000000000000009 | ERROR: Credit card numbers should be no more than 19 characters. |
 
   Scenario Outline: Credit card numbers will always be numeric
     Given a valid given name
@@ -111,7 +111,7 @@ Feature: "back" command
     And a credit card number of "<credit_card_number>"
     And a valid backing amount
     When the "back" command is invoked
-    Then Mini Kickstarter should respond to the command input with the message "<message>"
+    Then Mini Kickstarter should respond with "<message>"
 
     # Getting more specific here to make sure we're rejecting the number for the right reason.
     Examples:
@@ -125,20 +125,20 @@ Feature: "back" command
     And a credit card number of "<credit_card_number>"
     And a valid backing amount
     When the "back" command is invoked
-    Then Mini Kickstarter should <response> the command input
+    Then Mini Kickstarter should respond with "<message>"
 
     Examples:
-      | credit_card_number   | response |
-      |          79927398713 |   accept |
-      |          79927398710 |   reject |
-      |          79927398711 |   reject |
-      |          79927398712 |   reject |
-      |          79927398714 |   reject |
-      |          79927398715 |   reject |
-      |          79927398716 |   reject |
-      |          79927398717 |   reject |
-      |          79927398718 |   reject |
-      |          79927398719 |   reject |
+      | credit_card_number   | message                            |
+      |          79927398713 |                            Success |
+      |          79927398710 | ERROR: Invalid credit card number. |
+      |          79927398711 | ERROR: Invalid credit card number. |
+      |          79927398712 | ERROR: Invalid credit card number. |
+      |          79927398714 | ERROR: Invalid credit card number. |
+      |          79927398715 | ERROR: Invalid credit card number. |
+      |          79927398716 | ERROR: Invalid credit card number. |
+      |          79927398717 | ERROR: Invalid credit card number. |
+      |          79927398718 | ERROR: Invalid credit card number. |
+      |          79927398719 | ERROR: Invalid credit card number. |
 
   # While implicitly covered in other scenarios, the project specs list this requirement explicitly.
   Scenario Outline: Credit card numbers that fail Luhn-10 will display an error
@@ -147,7 +147,7 @@ Feature: "back" command
     And a credit card number of "<credit_card_number>"
     And a valid backing amount
     When the "back" command is invoked
-    Then Mini Kickstarter should respond to the command input with the message "<message>"
+    Then Mini Kickstarter should respond with "<message>"
 
     Examples:
       | credit_card_number   |                                                          message |
@@ -162,4 +162,4 @@ Feature: "back" command
     And a valid backing amount
     And the credit card number "79927398713" has already been entered
     When the "back" command is invoked
-    Then Mini Kickstarter should respond to the command input with the message "ERROR: The credit card number has already been entered."
+    Then Mini Kickstarter should respond with "ERROR: The credit card number has already been entered."
