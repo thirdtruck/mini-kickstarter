@@ -39,7 +39,6 @@ Given(/^a project has been backed$/) do
 end
 
 Given(/^a project has been backed by "([^"]*)" for \$(.*) with card number (\d*)$/) do |given_name, backing_amount, credit_card_number|
-  step %Q{a project has been created}
   step %Q{a given name of "#{given_name}"}
   step %Q{a credit card number of "#{credit_card_number}"}
   step %Q{a backing amount of "#{backing_amount}"}

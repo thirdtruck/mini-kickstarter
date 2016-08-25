@@ -3,7 +3,7 @@ Given(/^a project with a valid name$/) do
 end
 
 Given(/^a valid target dollar amount$/) do
-  @target_dollar_amount = "450.00"
+  @target_dollar_amount = "500.00"
 end
 
 Given(/^a project called "([^"]*)"$/) do |project_name|
