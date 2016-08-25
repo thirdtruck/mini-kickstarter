@@ -15,7 +15,7 @@ Feature: "back" command
     Examples:
       | name    | message                                                                       |
       | example |                                  example backed project Awesome_Sauce for $50 |
-      | EXAMPLE |                                  EXAMPLE Backed project Awesome_Sauce for $50 |
+      | EXAMPLE |                                  EXAMPLE backed project Awesome_Sauce for $50 |
       | 3xampl3 |                                  3xampl3 backed project Awesome_Sauce for $50 |
       | ex@mpl3 | ERROR: Given names should be alphanumeric. Underscores or dashes are allowed. |
       | $$$$$$$ | ERROR: Given names should be alphanumeric. Underscores or dashes are allowed. |
@@ -33,13 +33,13 @@ Feature: "back" command
 
     Examples:
       | name    | message                                      |
-      | ex_mple | example backed project Awesome_Sauce for $50 |
+      | ex_mple | ex_mple backed project Awesome_Sauce for $50 |
       | _xample | _xample backed project Awesome_Sauce for $50 |
       | exampl_ | exampl_ backed project Awesome_Sauce for $50 |
       | ex-mple | ex-mple backed project Awesome_Sauce for $50 |
       | -xample | -xample backed project Awesome_Sauce for $50 |
       | exampl- | exampl- backed project Awesome_Sauce for $50 |
-      | e_amp-e | ex_mp-e backed project Awesome_Sauce for $50 |
+      | e_amp-e | e_amp-e backed project Awesome_Sauce for $50 |
 
   Scenario Outline: Projects must be between 4 and 20 characters long
     Given a given name of "<name>"

@@ -81,8 +81,9 @@ class MiniKickstarter
       raise InvalidCommandParameterError, "Target dollar amount should include both dollars and cents."
     else
       begin
-        db.back_project(project_name, given_name, credit_card_number, dollars_and_cents_to_int(backing_amount.to_f))
-        "Success"
+        amount_as_int = dollars_and_cents_to_int(backing_amount)
+        db.back_project(project_name, given_name, credit_card_number, amount_as_int)
+        "#{given_name} backed project #{project_name} for $#{as_dollars_and_cents(amount_as_int)}"
       rescue MiniKickstarterDB::ProjectAlreadyBackedError
         return raise InvalidCommandParameterError, "The credit card number has already been entered."
       end
