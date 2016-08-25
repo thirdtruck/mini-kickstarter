@@ -84,3 +84,10 @@ Feature: "project" command
       |    0.7 | ERROR: Target dollar amount is invalid |
       |     1. | ERROR: Target dollar amount is invalid |
       |     .7 | ERROR: Target dollar amount is invalid |
+
+  Scenario: Complain if a parameter is missing
+    # No project name given
+    # No dollar amount given
+    When the "project" command is invoked
+    Then Mini Kickstarter should respond with "ERROR: Missing parameter(s)"
+
