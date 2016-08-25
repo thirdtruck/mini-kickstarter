@@ -1,5 +1,6 @@
 # Hide the Luhn-10 algorithm inside a module so that MiniKickstarter can remain
-# ignorant of the specifics. Useful if we want to add web-based authentication later, too.
+# ignorant of the specifics. Hides the string wrangling, too.
+# Also useful if we want to add web-based authentication later.
 module CreditCard
   def valid_credit_card_number?(cc_number)
     valid_luhn_10_sequence?(cc_number.to_s.split(//).map(&:to_i))
