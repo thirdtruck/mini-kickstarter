@@ -42,6 +42,7 @@ class MiniKickstarter
     elsif target_dollar_amount !~ JUST_DOLLARS_AND_CENTS
       raise InvalidCommandParameterError, "Target dollar amount should include both dollars and cents."
     else
+      db.create_project(project_name, dollars_and_cents_to_int(target_dollar_amount)) # TODO: Extract conversion method
       "Success"
     end
   end
@@ -72,7 +73,7 @@ class MiniKickstarter
       raise InvalidCommandParameterError, "Target dollar amount should include both dollars and cents."
     else
       begin
-        db.back_project(given_name, 0, credit_card_number, backing_amount)
+        db.back_project(project_name, given_name, credit_card_number, dollars_and_cents_to_int(backing_amount.to_f))
         "Success"
       rescue MiniKickstarterDB::ProjectAlreadyBackedError
         return raise InvalidCommandParameterError, "The credit card number has already been entered."
@@ -81,7 +82,44 @@ class MiniKickstarter
   end
 
   def invoke_list(db, command_params)
-    db.list_projects
+    project_name = command_params[:project_name]
+    project = db.find_project_by_project_name(project_name)
+    project_id = project[0]
+    target_dollar_amount = project[2]
+
+    backings = db.find_backings_by_project_id(project_id)
+
+    backing_amounts = backings.map { |backing| backing[4] }
+
+    unbacked_amount = target_dollar_amount - backing_amounts.reduce(:+)
+    if unbacked_amount < 0
+      unbacked_amount = 0
+    end
+
+    response = ''
+    backings.each do |backing|
+      backer_name = backing[1]
+      backing_amount = backing[4]
+      response << "-- #{backer_name} backed for $#{as_dollars_and_cents(backing_amount)}\n"
+    end
+    response << "#{project_name} needs $#{as_dollars_and_cents(unbacked_amount)} more dollars to be successful"
+    response
+  end
+
+  def dollars_and_cents_to_int(amount_string)
+    (amount_string.to_f * 100).to_i
+  end
+
+  def as_dollars_and_cents(amount)
+    cents = amount % 100
+    dollars = (amount - cents) / 100
+    if cents == 0
+      "#{dollars}"
+    elsif dollars == 0
+      "0.#{cents.to_s.rjust(2, '0')}"
+    else
+      "#{dollars}.#{cents.to_s.rjust(2, '0')}"
+    end
   end
 
   def valid_luhn_10_sequence?(digits)
