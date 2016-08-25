@@ -1,5 +1,8 @@
 require_relative 'mini_kickstarter'
 
+# Separate out the command line interface code from the command code
+# in order to keep concerns separated. Sets us up to use more advanced
+# command option management code later, too, like named parameters.
 class MiniKickstarterCLI
   def self.parse_and_invoke(db, original_arguments)
     arguments = original_arguments.compact

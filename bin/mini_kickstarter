@@ -2,6 +2,8 @@
 require_relative '../lib/mini_kickstarter_db'
 require_relative '../lib/mini_kickstarter_cli'
 
+# If I were to release this project publicly, I would use the optparse gem more
+# and add an option for specifying the DB file.
 db = MiniKickstarterDB.new('projects.db')
 
 if ARGV.length == 0
