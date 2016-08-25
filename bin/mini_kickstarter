@@ -4,4 +4,8 @@ require_relative '../lib/mini_kickstarter_cli'
 
 db = MiniKickstarterDB.new('projects.db')
 
-puts MiniKickstarterCLI.parse_and_invoke(db, ARGV)
+if ARGV.length == 0
+  puts "Usage: #{$0} <command> [parameter] [...]"
+else
+  puts MiniKickstarterCLI.parse_and_invoke(db, ARGV)
+end
