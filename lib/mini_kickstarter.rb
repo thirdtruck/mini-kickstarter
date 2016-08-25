@@ -70,11 +70,11 @@ class MiniKickstarter
     elsif project_name.length < 4 || project_name.length > 20
       raise InvalidCommandParameterError, "Projects should be no shorter than 4 characters but no longer than 20 characters."
     elsif credit_card_number_string.length > 19
-      raise InvalidCommandParameterError, "Credit card numbers should be no more than 19 characters."
+      raise InvalidCommandParameterError, "This card is invalid"
     elsif credit_card_number_string !~ NUMERIC
-      raise InvalidCommandParameterError, "Credit card numbers should contain only digits."
+      raise InvalidCommandParameterError, "This card is invalid"
     elsif ! valid_credit_card_number?(credit_card_number)
-      raise InvalidCommandParameterError, "Invalid credit card number." # TODO: What's a better error message?
+      raise InvalidCommandParameterError, "This card is invalid" # TODO: What's a better error message?
     elsif backing_amount =~ /\$/
       raise InvalidCommandParameterError, "Target dollar amount should not use the $ currency symbol."
     elsif backing_amount !~ JUST_DOLLARS_AND_CENTS
@@ -85,7 +85,7 @@ class MiniKickstarter
         db.back_project(project_name, given_name, credit_card_number, amount_as_int)
         "#{given_name} backed project #{project_name} for $#{as_dollars_and_cents(amount_as_int)}"
       rescue MiniKickstarterDB::ProjectAlreadyBackedError
-        return raise InvalidCommandParameterError, "The credit card number has already been entered."
+        return raise InvalidCommandParameterError, "That card has already been added by another user!"
       end
     end
   end

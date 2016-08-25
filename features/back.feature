@@ -113,9 +113,9 @@ Feature: "back" command
     Then Mini Kickstarter should respond with "<message>"
 
     Examples:
-      | credit_card_number   | message                                                          |
-      |  1000000000000000009 |                        Jane backed project Awesome_Sauce for $50 |
-      | 10000000000000000009 | ERROR: Credit card numbers should be no more than 19 characters. |
+      | credit_card_number   | message                                   |
+      |  1000000000000000009 | Jane backed project Awesome_Sauce for $50 |
+      | 10000000000000000009 |               ERROR: This card is invalid | 
 
   Scenario Outline: Credit card numbers will always be numeric
     Given a valid given name
@@ -127,9 +127,9 @@ Feature: "back" command
 
     # Getting more specific here to make sure we're rejecting the number for the right reason.
     Examples:
-      | credit_card_number   | message                                                |
-      |          79927398713 |              Jane backed project Awesome_Sauce for $50 |
-      |        799-2739-8713 | ERROR: Credit card numbers should contain only digits. |
+      | credit_card_number   | message                                   |
+      |          79927398713 | Jane backed project Awesome_Sauce for $50 |
+      |        799-2739-8713 |               ERROR: This card is invalid |
 
   Scenario Outline: Credit card numbers should be validated using Luhn-10
     Given a valid given name
@@ -142,15 +142,15 @@ Feature: "back" command
     Examples:
       | credit_card_number   | message                                   |
       |          79927398713 | Jane backed project Awesome_Sauce for $50 |
-      |          79927398710 |        ERROR: Invalid credit card number. |
-      |          79927398711 |        ERROR: Invalid credit card number. |
-      |          79927398712 |        ERROR: Invalid credit card number. |
-      |          79927398714 |        ERROR: Invalid credit card number. |
-      |          79927398715 |        ERROR: Invalid credit card number. |
-      |          79927398716 |        ERROR: Invalid credit card number. |
-      |          79927398717 |        ERROR: Invalid credit card number. |
-      |          79927398718 |        ERROR: Invalid credit card number. |
-      |          79927398719 |        ERROR: Invalid credit card number. |
+      |          79927398710 |               ERROR: This card is invalid |
+      |          79927398711 |               ERROR: This card is invalid |
+      |          79927398712 |               ERROR: This card is invalid |
+      |          79927398714 |               ERROR: This card is invalid |
+      |          79927398715 |               ERROR: This card is invalid |
+      |          79927398716 |               ERROR: This card is invalid |
+      |          79927398717 |               ERROR: This card is invalid |
+      |          79927398718 |               ERROR: This card is invalid |
+      |          79927398719 |               ERROR: This card is invalid |
 
   # While implicitly covered in other scenarios, the project specs list this requirement explicitly.
   Scenario Outline: Credit card numbers that fail Luhn-10 will display an error
@@ -162,10 +162,10 @@ Feature: "back" command
     Then Mini Kickstarter should respond with "<message>"
 
     Examples:
-      | credit_card_number   | message                                                          |
-      |          79927398710 | ERROR: Invalid credit card number.                               |
-      |        799-2739-8713 | ERROR: Credit card numbers should contain only digits.           |
-      | 10000000000000000009 | ERROR: Credit card numbers should be no more than 19 characters. |
+      | credit_card_number   | message                     |
+      |          79927398710 | ERROR: This card is invalid |
+      |        799-2739-8713 | ERROR: This card is invalid |
+      | 10000000000000000009 | ERROR: This card is invalid |
 
   Scenario: Credit card numbers that have already been added will display an error
     Given a valid given name
@@ -174,4 +174,4 @@ Feature: "back" command
     And a valid backing amount
     And the credit card number "79927398713" has already been entered
     When the "back" command is invoked
-    Then Mini Kickstarter should respond with "ERROR: The credit card number has already been entered."
+    Then Mini Kickstarter should respond with "ERROR: That card has already been added by another user!"
