@@ -14,12 +14,12 @@ Feature: "back" command
     # TODO: Perform more thorough checks of Unicode strings.
     Examples:
       | name    | message                                                                       |
-      | example |                                                                       Success |
-      | EXAMPLE |                                                                       Success |
-      | 3xampl3 |                                                                       Success |
+      | example |                                  example backed project Awesome_Sauce for $50 |
+      | EXAMPLE |                                  EXAMPLE Backed project Awesome_Sauce for $50 |
+      | 3xampl3 |                                  3xampl3 backed project Awesome_Sauce for $50 |
       | ex@mpl3 | ERROR: Given names should be alphanumeric. Underscores or dashes are allowed. |
       | $$$$$$$ | ERROR: Given names should be alphanumeric. Underscores or dashes are allowed. |
-      |  thí_dụ |                                                                       Success |
+      |  thí_dụ |                                   thí_dụ backed project Awesome_Sauce for $50 |
       |     ___ | ERROR: Given names should be alphanumeric. Underscores or dashes are allowed. |
       |     --- | ERROR: Given names should be alphanumeric. Underscores or dashes are allowed. |
 
@@ -32,14 +32,14 @@ Feature: "back" command
     Then Mini Kickstarter should respond with "<message>"
 
     Examples:
-      | name    | message   |
-      | ex_mple |   Success |
-      | _xample |   Success |
-      | exampl_ |   Success |
-      | ex-mple |   Success |
-      | -xample |   Success |
-      | exampl- |   Success |
-      | e_amp-e |   Success |
+      | name    | message                                      |
+      | ex_mple | example backed project Awesome_Sauce for $50 |
+      | _xample | _xample backed project Awesome_Sauce for $50 |
+      | exampl_ | exampl_ backed project Awesome_Sauce for $50 |
+      | ex-mple | ex-mple backed project Awesome_Sauce for $50 |
+      | -xample | -xample backed project Awesome_Sauce for $50 |
+      | exampl- | exampl- backed project Awesome_Sauce for $50 |
+      | e_amp-e | ex_mp-e backed project Awesome_Sauce for $50 |
 
   Scenario Outline: Projects must be between 4 and 20 characters long
     Given a given name of "<name>"
@@ -53,8 +53,8 @@ Feature: "back" command
     Examples:
       | name                  | message                                                                                     |
       | exa                   | ERROR: Given names should be no shorter than 4 characters but no longer than 20 characters. |
-      | exam                  |                                                                                     Success |
-      | 20ampleexampleexampl  |                                                                                     Success |
+      | exam                  |                                                   exam backed project Awesome_Sauce for $50 |
+      | 20ampleexampleexampl  |                                  20ampleexampleexampl backed project Awesome_Sauce for $50 |
       | 21ampleexampleexample | ERROR: Given names should be no shorter than 4 characters but no longer than 20 characters. |
       | thí                   | ERROR: Given names should be no shorter than 4 characters but no longer than 20 characters. |
       | thí_dụthí_dụthí_dụthí | ERROR: Given names should be no shorter than 4 characters but no longer than 20 characters. |
@@ -66,15 +66,15 @@ Feature: "back" command
     And a valid credit card number
     And a backing amount of "<amount>"
     When the "back" command is invoked
-    Then Mini Kickstarter should accept the command input
+    Then Mini Kickstarter should respond with "<message>"
 
     Examples:
-      | amount   |
-      |        1 |
-      |     1.00 |
-      |    19.95 |
-      |      500 |
-      |  1000000 |
+      | amount   | message                                        |
+      |        1 |       Jane backed project Awesome_Sauce for $1 |
+      |     1.00 |       Jane backed project Awesome_Sauce for $1 |
+      |    19.95 |   Jane backed project Awesome_Sauce for $19.95 |
+      |      500 |     Jane backed project Awesome_Sauce for $500 |
+      |  1000000 | Jane backed project Awesome_Sauce for $1000000 |
 
   Scenario Outline: Backing amounts cannot have the $ currency symbol
     Given a valid given name
@@ -114,7 +114,7 @@ Feature: "back" command
 
     Examples:
       | credit_card_number   | message                                                          |
-      |  1000000000000000009 |                                                          Success |
+      |  1000000000000000009 |                        Jane backed project Awesome_Sauce for $50 |
       | 10000000000000000009 | ERROR: Credit card numbers should be no more than 19 characters. |
 
   Scenario Outline: Credit card numbers will always be numeric
@@ -127,9 +127,9 @@ Feature: "back" command
 
     # Getting more specific here to make sure we're rejecting the number for the right reason.
     Examples:
-      | credit_card_number   | message                                                  |
-      |          79927398713 |                                                  Success |
-      |        799-2739-8713 |   ERROR: Credit card numbers should contain only digits. |
+      | credit_card_number   | message                                                |
+      |          79927398713 |              Jane backed project Awesome_Sauce for $50 |
+      |        799-2739-8713 | ERROR: Credit card numbers should contain only digits. |
 
   Scenario Outline: Credit card numbers should be validated using Luhn-10
     Given a valid given name
@@ -140,17 +140,17 @@ Feature: "back" command
     Then Mini Kickstarter should respond with "<message>"
 
     Examples:
-      | credit_card_number   | message                            |
-      |          79927398713 |                            Success |
-      |          79927398710 | ERROR: Invalid credit card number. |
-      |          79927398711 | ERROR: Invalid credit card number. |
-      |          79927398712 | ERROR: Invalid credit card number. |
-      |          79927398714 | ERROR: Invalid credit card number. |
-      |          79927398715 | ERROR: Invalid credit card number. |
-      |          79927398716 | ERROR: Invalid credit card number. |
-      |          79927398717 | ERROR: Invalid credit card number. |
-      |          79927398718 | ERROR: Invalid credit card number. |
-      |          79927398719 | ERROR: Invalid credit card number. |
+      | credit_card_number   | message                                   |
+      |          79927398713 | Jane backed project Awesome_Sauce for $50 |
+      |          79927398710 |        ERROR: Invalid credit card number. |
+      |          79927398711 |        ERROR: Invalid credit card number. |
+      |          79927398712 |        ERROR: Invalid credit card number. |
+      |          79927398714 |        ERROR: Invalid credit card number. |
+      |          79927398715 |        ERROR: Invalid credit card number. |
+      |          79927398716 |        ERROR: Invalid credit card number. |
+      |          79927398717 |        ERROR: Invalid credit card number. |
+      |          79927398718 |        ERROR: Invalid credit card number. |
+      |          79927398719 |        ERROR: Invalid credit card number. |
 
   # While implicitly covered in other scenarios, the project specs list this requirement explicitly.
   Scenario Outline: Credit card numbers that fail Luhn-10 will display an error
@@ -162,7 +162,7 @@ Feature: "back" command
     Then Mini Kickstarter should respond with "<message>"
 
     Examples:
-      | credit_card_number   |                                                          message |
+      | credit_card_number   | message                                                          |
       |          79927398710 | ERROR: Invalid credit card number.                               |
       |        799-2739-8713 | ERROR: Credit card numbers should contain only digits.           |
       | 10000000000000000009 | ERROR: Credit card numbers should be no more than 19 characters. |
