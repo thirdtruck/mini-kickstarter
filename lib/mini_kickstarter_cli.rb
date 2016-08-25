@@ -26,6 +26,7 @@ class MiniKickstarterCLI
         project_name: arguments[0]
       }
     when "backer"
+      raise MissingCommandParameterError if arguments.length < 1
       {
         given_name: arguments[0],
       }

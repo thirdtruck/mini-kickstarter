@@ -10,3 +10,9 @@ Feature: "backer" command
     """
 
   # TODO: Should we list each backing separately or the grand total?
+
+  Scenario: Complain if a parameter is missing
+    # No arguments given
+    When the "backer" command is invoked
+    Then Mini Kickstarter should respond with "ERROR: Missing parameter(s)"
+
