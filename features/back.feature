@@ -13,15 +13,15 @@ Feature: "back" command
 
     # TODO: Perform more thorough checks of Unicode strings.
     Examples:
-      | name    | message                                                                       |
-      | example |                                  example backed project Awesome_Sauce for $50 |
-      | EXAMPLE |                                  EXAMPLE backed project Awesome_Sauce for $50 |
-      | 3xampl3 |                                  3xampl3 backed project Awesome_Sauce for $50 |
-      | ex@mpl3 | ERROR: Given names should be alphanumeric. Underscores or dashes are allowed. |
-      | $$$$$$$ | ERROR: Given names should be alphanumeric. Underscores or dashes are allowed. |
-      |  thí_dụ |                                   thí_dụ backed project Awesome_Sauce for $50 |
-      |     ___ | ERROR: Given names should be alphanumeric. Underscores or dashes are allowed. |
-      |     --- | ERROR: Given names should be alphanumeric. Underscores or dashes are allowed. |
+      | name    | message                                                                      |
+      | example |                                 example backed project Awesome_Sauce for $50 |
+      | EXAMPLE |                                 EXAMPLE backed project Awesome_Sauce for $50 |
+      | 3xampl3 |                                 3xampl3 backed project Awesome_Sauce for $50 |
+      | ex@mpl3 | ERROR: Given names should be alphanumeric. Underscores or dashes are allowed |
+      | $$$$$$$ | ERROR: Given names should be alphanumeric. Underscores or dashes are allowed |
+      |  thí_dụ |                                  thí_dụ backed project Awesome_Sauce for $50 |
+      |     ___ | ERROR: Given names should be alphanumeric. Underscores or dashes are allowed |
+      |     --- | ERROR: Given names should be alphanumeric. Underscores or dashes are allowed |
 
   Scenario Outline: Given names can include underscores or dashes
     Given a given name of "<name>"
@@ -51,13 +51,13 @@ Feature: "back" command
 
     # TODO: Perform more thorough checks of Unicode strings.
     Examples:
-      | name                  | message                                                                                     |
-      | exa                   | ERROR: Given names should be no shorter than 4 characters but no longer than 20 characters. |
-      | exam                  |                                                   exam backed project Awesome_Sauce for $50 |
-      | 20ampleexampleexampl  |                                   20ampleexampleexampl backed project Awesome_Sauce for $50 |
-      | 21ampleexampleexample | ERROR: Given names should be no shorter than 4 characters but no longer than 20 characters. |
-      | thí                   | ERROR: Given names should be no shorter than 4 characters but no longer than 20 characters. |
-      | thí_dụthí_dụthí_dụthí | ERROR: Given names should be no shorter than 4 characters but no longer than 20 characters. |
+      | name                  | message                                                                                    |
+      | exa                   | ERROR: Given names should be no shorter than 4 characters but no longer than 20 characters |
+      | exam                  |                                                  exam backed project Awesome_Sauce for $50 |
+      | 20ampleexampleexampl  |                                  20ampleexampleexampl backed project Awesome_Sauce for $50 |
+      | 21ampleexampleexample | ERROR: Given names should be no shorter than 4 characters but no longer than 20 characters |
+      | thí                   | ERROR: Given names should be no shorter than 4 characters but no longer than 20 characters |
+      | thí_dụthí_dụthí_dụthí | ERROR: Given names should be no shorter than 4 characters but no longer than 20 characters |
 
   # TODO: Clarify whether this MUST accept BOTH dollars and cents or whether just dollars would suffice.
   Scenario Outline: Backing amounts should accept both dollars and cents
@@ -82,7 +82,7 @@ Feature: "back" command
     And a valid credit card number
     And a backing amount of "<amount>"
     When the "back" command is invoked
-    Then Mini Kickstarter should respond with "ERROR: Target dollar amount should not use the $ currency symbol."
+    Then Mini Kickstarter should respond with "ERROR: Target dollar amount should not use the $ currency symbol"
 
     Examples:
       | amount   |
@@ -98,11 +98,11 @@ Feature: "back" command
     Then Mini Kickstarter should respond with "<message>"
 
     Examples:
-      | amount | message                                                            |
-      |  01.07 | ERROR: Target dollar amount should include both dollars and cents. |
-      |    0.7 | ERROR: Target dollar amount should include both dollars and cents. |
-      |     1. | ERROR: Target dollar amount should include both dollars and cents. |
-      |     .7 | ERROR: Target dollar amount should include both dollars and cents. |
+      | amount | message                                                           |
+      |  01.07 | ERROR: Target dollar amount should include both dollars and cents |
+      |    0.7 | ERROR: Target dollar amount should include both dollars and cents |
+      |     1. | ERROR: Target dollar amount should include both dollars and cents |
+      |     .7 | ERROR: Target dollar amount should include both dollars and cents |
 
   Scenario Outline: Credit card numbers may be up to 19 characters long
     Given a valid given name

@@ -20,7 +20,7 @@ class MiniKickstarter
     when "backer"
       invoke_backer(db, command_params)
     else
-      raise InvalidCommandParameterError, "Unrecognized command."
+      raise InvalidCommandParameterError, "Unrecognized command"
     end
   end
 
@@ -40,13 +40,13 @@ class MiniKickstarter
 
     # TODO: Do we need to use #mb_chars here? Doesn't seem to be the case.
     if project_name !~ ALPHANUMERIC_WITH_UNDERSCORES_DASHES
-      raise InvalidCommandParameterError, "Projects should be alphanumeric. Underscores or dashes are allowed."
+      raise InvalidCommandParameterError, "Projects should be alphanumeric. Underscores or dashes are allowed"
     elsif project_name.length < 4 || project_name.length > 20
-      raise InvalidCommandParameterError, "Projects should be no shorter than 4 characters but no longer than 20 characters."
+      raise InvalidCommandParameterError, "Projects should be no shorter than 4 characters but no longer than 20 characters"
     elsif target_dollar_amount =~ /\$/
-      raise InvalidCommandParameterError, "Target dollar amount should not use the $ currency symbol."
+      raise InvalidCommandParameterError, "Target dollar amount should not use the $ currency symbol"
     elsif target_dollar_amount !~ JUST_DOLLARS_AND_CENTS
-      raise InvalidCommandParameterError, "Target dollar amount should include both dollars and cents."
+      raise InvalidCommandParameterError, "Target dollar amount should include both dollars and cents"
     else
       amount_as_int = dollars_and_cents_to_int(target_dollar_amount)
       db.create_project(project_name, amount_as_int)
@@ -62,13 +62,13 @@ class MiniKickstarter
     backing_amount = command_params[:backing_amount]
 
     if given_name !~ ALPHANUMERIC_WITH_UNDERSCORES_DASHES
-      raise InvalidCommandParameterError, "Given names should be alphanumeric. Underscores or dashes are allowed."
+      raise InvalidCommandParameterError, "Given names should be alphanumeric. Underscores or dashes are allowed"
     elsif given_name.length < 4 || given_name.length > 20
-      raise InvalidCommandParameterError, "Given names should be no shorter than 4 characters but no longer than 20 characters."
+      raise InvalidCommandParameterError, "Given names should be no shorter than 4 characters but no longer than 20 characters"
     elsif project_name !~ ALPHANUMERIC_WITH_UNDERSCORES_DASHES
-      raise InvalidCommandParameterError, "Projects should be alphanumeric. Underscores or dashes are allowed."
+      raise InvalidCommandParameterError, "Projects should be alphanumeric. Underscores or dashes are allowed"
     elsif project_name.length < 4 || project_name.length > 20
-      raise InvalidCommandParameterError, "Projects should be no shorter than 4 characters but no longer than 20 characters."
+      raise InvalidCommandParameterError, "Projects should be no shorter than 4 characters but no longer than 20 characters"
     elsif credit_card_number_string.length > 19
       raise InvalidCommandParameterError, "This card is invalid"
     elsif credit_card_number_string !~ NUMERIC
@@ -76,9 +76,9 @@ class MiniKickstarter
     elsif ! valid_credit_card_number?(credit_card_number)
       raise InvalidCommandParameterError, "This card is invalid" # TODO: What's a better error message?
     elsif backing_amount =~ /\$/
-      raise InvalidCommandParameterError, "Target dollar amount should not use the $ currency symbol."
+      raise InvalidCommandParameterError, "Target dollar amount should not use the $ currency symbol"
     elsif backing_amount !~ JUST_DOLLARS_AND_CENTS
-      raise InvalidCommandParameterError, "Target dollar amount should include both dollars and cents."
+      raise InvalidCommandParameterError, "Target dollar amount should include both dollars and cents"
     else
       begin
         amount_as_int = dollars_and_cents_to_int(backing_amount)

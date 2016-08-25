@@ -8,15 +8,15 @@ Feature: "project" command
 
     # TODO: Perform more thorough checks of Unicode strings.
     Examples:
-      | project | message                                                                    |
-      | example |                                  Added example project with target of $500 |
-      | EXAMPLE |                                  Added EXAMPLE project with target of $500 |
-      | 3xampl3 |                                  Added 3xampl3 project with target of $500 |
-      | ex@mpl3 | ERROR: Projects should be alphanumeric. Underscores or dashes are allowed. |
-      | $$$$$$$ | ERROR: Projects should be alphanumeric. Underscores or dashes are allowed. |
-      |  thí_dụ |                                   Added thí_dụ project with target of $500 |
-      |     ___ | ERROR: Projects should be alphanumeric. Underscores or dashes are allowed. |
-      |     --- | ERROR: Projects should be alphanumeric. Underscores or dashes are allowed. |
+      | project | message                                                                   |
+      | example |                                 Added example project with target of $500 |
+      | EXAMPLE |                                 Added EXAMPLE project with target of $500 |
+      | 3xampl3 |                                 Added 3xampl3 project with target of $500 |
+      | ex@mpl3 | ERROR: Projects should be alphanumeric. Underscores or dashes are allowed |
+      | $$$$$$$ | ERROR: Projects should be alphanumeric. Underscores or dashes are allowed |
+      |  thí_dụ |                                  Added thí_dụ project with target of $500 |
+      |     ___ | ERROR: Projects should be alphanumeric. Underscores or dashes are allowed |
+      |     --- | ERROR: Projects should be alphanumeric. Underscores or dashes are allowed |
 
   # TODO: Get more exacting expectations for underscores and dashes.
   Scenario Outline: Projects can include underscores or dashes
@@ -43,13 +43,13 @@ Feature: "project" command
 
     # TODO: Perform more thorough checks of Unicode strings.
     Examples:
-      | project               | message                                                                                  |
-      | exa                   | ERROR: Projects should be no shorter than 4 characters but no longer than 20 characters. |
-      | exam                  |                                                   Added exam project with target of $500 |
-      | 20ampleexampleexampl  |                                   Added 20ampleexampleexampl project with target of $500 |
-      | 21ampleexampleexample | ERROR: Projects should be no shorter than 4 characters but no longer than 20 characters. |
-      | thí                   | ERROR: Projects should be no shorter than 4 characters but no longer than 20 characters. |
-      | thí_dụthí_dụthí_dụthí | ERROR: Projects should be no shorter than 4 characters but no longer than 20 characters. |
+      | project               | message                                                                                 |
+      | exa                   | ERROR: Projects should be no shorter than 4 characters but no longer than 20 characters |
+      | exam                  |                                                  Added exam project with target of $500 |
+      | 20ampleexampleexampl  |                                  Added 20ampleexampleexampl project with target of $500 |
+      | 21ampleexampleexample | ERROR: Projects should be no shorter than 4 characters but no longer than 20 characters |
+      | thí                   | ERROR: Projects should be no shorter than 4 characters but no longer than 20 characters |
+      | thí_dụthí_dụthí_dụthí | ERROR: Projects should be no shorter than 4 characters but no longer than 20 characters |
 
   # TODO: Clarify whether this MUST accept BOTH dollars and cents or whether just dollars would suffice.
   Scenario Outline: Target dollar amounts should accept both dollars and cents
@@ -70,7 +70,7 @@ Feature: "project" command
     Given a project with a valid name
     And a target dollar amount of "$1000000.00"
     When the "project" command is invoked
-    Then Mini Kickstarter should respond with "ERROR: Target dollar amount should not use the $ currency symbol."
+    Then Mini Kickstarter should respond with "ERROR: Target dollar amount should not use the $ currency symbol"
 
   Scenario Outline: Target dollar amounts should not accept amounts with missing or extra digits
     Given a project with a valid name
@@ -79,8 +79,8 @@ Feature: "project" command
     Then Mini Kickstarter should respond with "<message>"
 
     Examples:
-      | amount |                                                            message |
-      |  01.07 | ERROR: Target dollar amount should include both dollars and cents. |
-      |    0.7 | ERROR: Target dollar amount should include both dollars and cents. |
-      |     1. | ERROR: Target dollar amount should include both dollars and cents. |
-      |     .7 | ERROR: Target dollar amount should include both dollars and cents. |
+      | amount |                                                           message |
+      |  01.07 | ERROR: Target dollar amount should include both dollars and cents |
+      |    0.7 | ERROR: Target dollar amount should include both dollars and cents |
+      |     1. | ERROR: Target dollar amount should include both dollars and cents |
+      |     .7 | ERROR: Target dollar amount should include both dollars and cents |
