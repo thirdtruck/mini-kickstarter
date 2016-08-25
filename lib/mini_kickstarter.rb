@@ -102,12 +102,19 @@ class MiniKickstarter
     end
 
     response = ''
+
     backings.each do |backing|
       backer_name = backing[1]
       backing_amount = backing[4]
       response << "-- #{backer_name} backed for $#{as_dollars_and_cents(backing_amount)}\n"
     end
-    response << "#{project_name} needs $#{as_dollars_and_cents(unbacked_amount)} more dollars to be successful"
+
+    if unbacked_amount > 0
+      response << "#{project_name} needs $#{as_dollars_and_cents(unbacked_amount)} more dollars to be successful"
+    else
+      response << "#{project_name} is successful!"
+    end
+
     response
   end
 
