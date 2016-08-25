@@ -2,7 +2,7 @@ Feature: "list" command
 
   Scenario: Display a project's backers and backed amounts
     Given a project has been backed by "John" for $50 with card number 79927398713
-    Given a project has been backed by "Jane" for $50 with card number 5555555555554444
+    Given a project has been backed by "Jane" for $50 with card number 79927398721
     When the "list" command is invoked
     Then Mini Kickstarter should respond with:
     """
