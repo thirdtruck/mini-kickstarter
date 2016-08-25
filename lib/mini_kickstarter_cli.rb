@@ -1,12 +1,14 @@
 require_relative 'mini_kickstarter'
 
 class MiniKickstarterCLI
-  def self.parse_and_invoke(db, arguments)
+  def self.parse_and_invoke(db, original_arguments)
+    arguments = original_arguments.compact
     command_name = arguments.shift # Shifting to simplify counting/indexing below
 
     command_params = case command_name
 
     when "project"
+      raise MissingCommandParameterError if arguments.length < 2
       {
         project_name: arguments[0],
         target_dollar_amount: arguments[1]
@@ -33,6 +35,8 @@ class MiniKickstarterCLI
     rescue StandardError => e
       "ERROR: #{e.message}"
     end
+  rescue MissingCommandParameterError => e
+    "ERROR: Missing parameter(s)"
   end
 
   class MissingCommandParameterError < StandardError
