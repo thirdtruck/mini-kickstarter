@@ -25,3 +25,9 @@ Feature: "list" command
     -- Mary backed for $400
     Awesome_Sauce is successful!
     """
+
+  Scenario: Complain if a parameter is missing
+    # No arguments given
+    When the "list" command is invoked
+    Then Mini Kickstarter should respond with "ERROR: Missing parameter(s)"
+

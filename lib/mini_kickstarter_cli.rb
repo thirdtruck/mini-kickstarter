@@ -22,6 +22,7 @@ class MiniKickstarterCLI
         backing_amount: arguments[3]
       }
     when "list"
+      raise MissingCommandParameterError if arguments.length < 1
       {
         project_name: arguments[0]
       }
