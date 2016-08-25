@@ -17,7 +17,7 @@ end
 Given(/^a project has been created$/) do
   step 'a project with a valid name'
   step 'a valid target dollar amount'
-  step 'the "project" command is invoked'
+  step 'the "project" command is invoked successfully'
 end
 
 When(/^the "project" command is invoked$/) do
@@ -32,4 +32,14 @@ When(/^the "project" command is invoked$/) do
   rescue MiniKickstarter::InvalidCommandParameterError => e
     @command_response = "ERROR: #{e.message}"
   end
+end
+
+When(/^the "project" command is invoked successfully$/) do
+  @db ||= MiniKickstarterDB.new(':memory:')
+
+  mini_kickstarter = MiniKickstarter.new
+  mini_kickstarter.invoke(@db,
+                          "project",
+                          project_name: @project_name,
+                          target_dollar_amount: @target_dollar_amount)
 end
