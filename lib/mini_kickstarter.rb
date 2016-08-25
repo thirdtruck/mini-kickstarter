@@ -1,4 +1,8 @@
+require 'credit_card'
+
 class MiniKickstarter
+  include CreditCard
+
   # TODO: Move checks into the option parser. Take only pre-vetted input.
   NUMERIC = /\A[0-9]+\z/
   ALPHANUMERIC_WITH_UNDERSCORES_DASHES = /\A[[:alnum:]_-]*[[:alnum:]]+[[:alnum:]_-]*\z/
@@ -11,6 +15,8 @@ class MiniKickstarter
       invoke_project(db, command_params)
     when "back"
       invoke_back(db, command_params)
+    when "list"
+      invoke_list(db, command_params)
     else
       raise InvalidCommandParameterError, "Unrecognized command."
     end
@@ -40,6 +46,7 @@ class MiniKickstarter
     elsif target_dollar_amount !~ JUST_DOLLARS_AND_CENTS
       raise InvalidCommandParameterError, "Target dollar amount should include both dollars and cents."
     else
+      db.create_project(project_name, dollars_and_cents_to_int(target_dollar_amount)) # TODO: Extract conversion method
       "Success"
     end
   end
@@ -47,7 +54,8 @@ class MiniKickstarter
   def invoke_back(db, command_params)
     given_name = command_params[:given_name]
     project_name = command_params[:project_name]
-    credit_card_number = command_params[:credit_card_number]
+    credit_card_number_string = command_params[:credit_card_number]
+    credit_card_number = credit_card_number_string.to_i
     backing_amount = command_params[:backing_amount]
 
     if given_name !~ ALPHANUMERIC_WITH_UNDERSCORES_DASHES
@@ -58,11 +66,11 @@ class MiniKickstarter
       raise InvalidCommandParameterError, "Projects should be alphanumeric. Underscores or dashes are allowed."
     elsif project_name.length < 4 || project_name.length > 20
       raise InvalidCommandParameterError, "Projects should be no shorter than 4 characters but no longer than 20 characters."
-    elsif credit_card_number.length > 19
+    elsif credit_card_number_string.length > 19
       raise InvalidCommandParameterError, "Credit card numbers should be no more than 19 characters."
-    elsif credit_card_number !~ NUMERIC
+    elsif credit_card_number_string !~ NUMERIC
       raise InvalidCommandParameterError, "Credit card numbers should contain only digits."
-    elsif ! valid_luhn_10_sequence?(credit_card_number.split(//).map(&:to_i))
+    elsif ! valid_credit_card_number?(credit_card_number)
       raise InvalidCommandParameterError, "Invalid credit card number." # TODO: What's a better error message?
     elsif backing_amount =~ /\$/
       raise InvalidCommandParameterError, "Target dollar amount should not use the $ currency symbol."
@@ -70,7 +78,7 @@ class MiniKickstarter
       raise InvalidCommandParameterError, "Target dollar amount should include both dollars and cents."
     else
       begin
-        db.back_project(given_name, 0, credit_card_number, backing_amount)
+        db.back_project(project_name, given_name, credit_card_number, dollars_and_cents_to_int(backing_amount.to_f))
         "Success"
       rescue MiniKickstarterDB::ProjectAlreadyBackedError
         return raise InvalidCommandParameterError, "The credit card number has already been entered."
@@ -78,22 +86,44 @@ class MiniKickstarter
     end
   end
 
-  def valid_luhn_10_sequence?(digits)
-    odd_digits = []
-    even_digits = []
+  def invoke_list(db, command_params)
+    project_name = command_params[:project_name]
+    project = db.find_project_by_project_name(project_name)
+    project_id = project[0]
+    target_dollar_amount = project[2]
 
-    # TODO: Investigate more concise options.
-    digits.reverse.each_index do |index|
-      if (index+1) % 2 == 0
-        even_digits << digits[index]
-      else
-        odd_digits << digits[index]
-      end
+    backings = db.find_backings_by_project_id(project_id)
+
+    backing_amounts = backings.map { |backing| backing[4] }
+
+    unbacked_amount = target_dollar_amount - backing_amounts.reduce(:+)
+    if unbacked_amount < 0
+      unbacked_amount = 0
     end
 
-    total = odd_digits.reduce(&:+)
-    even_digits.each { |ed| total += (2*ed).to_s.split(//).map(&:to_i).reduce(&:+) }
+    response = ''
+    backings.each do |backing|
+      backer_name = backing[1]
+      backing_amount = backing[4]
+      response << "-- #{backer_name} backed for $#{as_dollars_and_cents(backing_amount)}\n"
+    end
+    response << "#{project_name} needs $#{as_dollars_and_cents(unbacked_amount)} more dollars to be successful"
+    response
+  end
 
-    (total % 10) == 0
+  def dollars_and_cents_to_int(amount_string)
+    (amount_string.to_f * 100).to_i
+  end
+
+  def as_dollars_and_cents(amount)
+    cents = amount % 100
+    dollars = (amount - cents) / 100
+    if cents == 0
+      "#{dollars}"
+    elsif dollars == 0
+      "0.#{cents.to_s.rjust(2, '0')}"
+    else
+      "#{dollars}.#{cents.to_s.rjust(2, '0')}"
+    end
   end
 end

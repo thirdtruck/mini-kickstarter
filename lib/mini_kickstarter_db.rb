@@ -11,20 +11,38 @@ class MiniKickstarterDB
     end
   end
 
-  def back_project(given_name, project_id, credit_card_number, backing_amount)
-    backing_count = @db.get_first_value('select count(id) from backings where credit_card_number = ?',
-                                        credit_card_number)
+  def create_project(project_name, target_dollar_amount)
+    @db.execute('insert into projects values(?, ?, ?);', nil, project_name, target_dollar_amount)
+  end
+
+  def find_project_id_by_project_name(project_name)
+    @db.get_first_value('select id from projects where project_name = ?', project_name)
+  end
+
+  def back_project(project_name, given_name, credit_card_number, backing_amount)
+    project_id = find_project_id_by_project_name(project_name)
+    backing_count = @db.get_first_value('select count(id) from backings where credit_card_number = ? and project_id = ?',
+                                        credit_card_number,
+                                        project_id)
 
     if backing_count > 0
       raise ProjectAlreadyBackedError
     end
 
-    @db.execute('insert into backings values (?, ?, ?, ?, ?)',
+    @db.execute('insert into backings values (?, ?, ?, ?, ?);',
                 nil,
                 given_name,
                 project_id,
                 credit_card_number,
                 backing_amount)
+  end
+
+  def find_project_by_project_name(project_name)
+    @db.get_first_row('select * from projects where project_name = ?', project_name)
+  end
+
+  def find_backings_by_project_id(project_id)
+    @db.execute('select * from backings where project_id = ?', project_id)
   end
 
   private

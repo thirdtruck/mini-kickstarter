@@ -1,14 +1,13 @@
 Given(/^a valid given name$/) do
-  @given_name = "example"
+  @given_name = "Jane"
 end
 
 Given(/^a valid credit card number$/) do
-  # TODO: Use a number that passes Luhn-10 below
   @credit_card_number = "79927398713"
 end
 
 Given(/^a valid backing amount$/) do
-  @backing_amount = "9.95"
+  @backing_amount = "50.00"
 end
 
 Given(/^a given name of "([^"]*)"$/) do |given_name|
@@ -28,7 +27,7 @@ Given(/^the credit card number "([^"]*)" has already been entered$/) do |credit_
   step %Q{a project with a valid name}
   step %Q{a credit card number of "#{credit_card_number}"}
   step %Q{a valid backing amount}
-  step %Q{the "back" command is invoked}
+  step %Q{the "back" command is invoked successfully}
 end
 
 Given(/^a project has been backed$/) do
@@ -36,10 +35,19 @@ Given(/^a project has been backed$/) do
   step %Q{a valid given name}
   step %Q{a valid credit card number}
   step %Q{a valid backing amount}
-  step %Q{the "back" command is invoked}
+  step %Q{the "back" command is invoked successfully}
+end
+
+Given(/^a project has been backed by "([^"]*)" for \$(.*) with card number (\d*)$/) do |given_name, backing_amount, credit_card_number|
+  step %Q{a given name of "#{given_name}"}
+  step %Q{a credit card number of "#{credit_card_number}"}
+  step %Q{a backing amount of "#{backing_amount}"}
+  step %Q{the "back" command is invoked successfully}
 end
 
 When(/^the "back" command is invoked$/) do
+  @db ||= MiniKickstarterDB.new(':memory:')
+
   mini_kickstarter = MiniKickstarter.new
   begin
     @command_response = mini_kickstarter.invoke(@db,
@@ -51,4 +59,16 @@ When(/^the "back" command is invoked$/) do
   rescue MiniKickstarter::InvalidCommandParameterError => e
     @command_response = "ERROR: #{e.message}"
   end
+end
+
+When(/^the "back" command is invoked successfully$/) do
+  @db ||= MiniKickstarterDB.new(':memory:')
+
+  mini_kickstarter = MiniKickstarter.new
+  mini_kickstarter.invoke(@db,
+                          "back",
+                          given_name: @given_name,
+                          project_name: @project_name,
+                          credit_card_number: @credit_card_number,
+                          backing_amount: @backing_amount)
 end
