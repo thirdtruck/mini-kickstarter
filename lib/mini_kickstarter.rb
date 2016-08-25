@@ -91,12 +91,12 @@ class MiniKickstarter
   def invoke_list(db, command_params)
     project_name = command_params[:project_name]
     project = db.find_project_by_project_name(project_name)
-    project_id = project[0]
-    target_dollar_amount = project[2]
+    project_id = project[:id]
+    target_dollar_amount = project[:target_dollar_amount]
 
     backings = db.find_backings_by_project_id(project_id)
 
-    backing_amounts = backings.map { |backing| backing[4] }
+    backing_amounts = backings.map { |backing| backing[:backing_dollar_amount] }
 
     unbacked_amount = target_dollar_amount - backing_amounts.reduce(:+)
     if unbacked_amount < 0
@@ -106,8 +106,8 @@ class MiniKickstarter
     response = ''
 
     backings.each do |backing|
-      backer_name = backing[1]
-      backing_amount = backing[4]
+      backer_name = backing[:given_name]
+      backing_amount = backing[:backing_dollar_amount]
       response << "-- #{backer_name} backed for $#{as_dollars_and_cents(backing_amount)}\n"
     end
 
