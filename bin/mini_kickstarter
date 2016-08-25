@@ -1,0 +1,39 @@
+#!/usr/bin/env ruby
+require_relative '../lib/mini_kickstarter'
+require_relative '../lib/mini_kickstarter_db'
+
+db = MiniKickstarterDB.new('projects.db')
+
+mks = MiniKickstarter.new
+
+command_name = ARGV[0]
+
+command_params = case command_name
+when "project"
+  {
+    project_name: ARGV[1],
+    target_dollar_amount: ARGV[2]
+  }
+when "back"
+  {
+    given_name: ARGV[1],
+    project_name: ARGV[2],
+    credit_card_number: ARGV[3],
+    backing_amount: ARGV[4]
+  }
+when "list"
+  {
+    project_name: ARGV[1]
+  }
+when "backer"
+  {
+    given_name: ARGV[1],
+  }
+end
+
+begin
+  response = mks.invoke(db, command_name, command_params)
+  puts response
+rescue StandardError => e
+  puts "ERROR: #{e.message}"
+end

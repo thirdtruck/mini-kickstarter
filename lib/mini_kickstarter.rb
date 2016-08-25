@@ -1,4 +1,4 @@
-require 'credit_card'
+require_relative 'credit_card'
 
 class MiniKickstarter
   include CreditCard
