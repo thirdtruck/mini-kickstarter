@@ -5,6 +5,8 @@ module CreditCard
     valid_luhn_10_sequence?(cc_number.to_s.split(//).map(&:to_i))
   end
 
+  private
+
   def valid_luhn_10_sequence?(digits)
     odd_digits = []
     even_digits = []
