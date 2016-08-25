@@ -29,11 +29,11 @@ end
 When(/^the "project" command is invoked$/) do
   @db ||= MiniKickstarterDB.new(':memory:')
 
-  @command_response = MiniKickstarter.new.parse_and_invoke(@db, ["project", @project_name, @target_dollar_amount])
+  @command_response = MiniKickstarterCLI.parse_and_invoke(@db, ["project", @project_name, @target_dollar_amount])
 end
 
 When(/^the "project" command is invoked successfully$/) do
   @db ||= MiniKickstarterDB.new(':memory:')
 
-  @command_response = MiniKickstarter.new.parse_and_invoke(@db, ["project", @project_name, @target_dollar_amount])
+  @command_response = MiniKickstarterCLI.parse_and_invoke(@db, ["project", @project_name, @target_dollar_amount])
 end

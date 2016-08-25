@@ -8,42 +8,6 @@ class MiniKickstarter
   ALPHANUMERIC_WITH_UNDERSCORES_DASHES = /\A[[:alnum:]_-]*[[:alnum:]]+[[:alnum:]_-]*\z/
   JUST_DOLLARS_AND_CENTS = /\A(0|[1-9][0-9]*|([1-9][0-9]*|[0-9])\.[0-9]{2})\z/
 
-  def parse_and_invoke(db, arguments)
-    command_name = arguments[0]
-
-    command_params = case command_name
-
-    when "project"
-      {
-        project_name: arguments[1],
-        target_dollar_amount: arguments[2]
-      }
-    when "back"
-      {
-        given_name: arguments[1],
-        project_name: arguments[2],
-        credit_card_number: arguments[3],
-        backing_amount: arguments[4]
-      }
-    when "list"
-      {
-        project_name: arguments[1]
-      }
-    when "backer"
-      {
-        given_name: arguments[1],
-      }
-    end
-
-    begin
-      invoke(db, command_name, command_params)
-    rescue StandardError => e
-      "ERROR: #{e.message}"
-    end
-  end
-
-  private
-
   def invoke(db, command_name, command_params)
     # TODO: Compile all errors before reporting instead of reporting only the first match. Better UX.
     case command_name
@@ -62,6 +26,8 @@ class MiniKickstarter
 
   class InvalidCommandParameterError < StandardError
   end
+
+  private
 
   def invoke_project(db, command_params)
     project_name = command_params[:project_name]

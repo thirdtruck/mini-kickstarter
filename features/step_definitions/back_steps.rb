@@ -48,19 +48,19 @@ end
 When(/^the "back" command is invoked$/) do
   @db ||= MiniKickstarterDB.new(':memory:')
 
-  @command_response = MiniKickstarter.new.parse_and_invoke(@db, ["back",
-                                                                 @given_name,
-                                                                 @project_name,
-                                                                 @credit_card_number,
-                                                                 @backing_amount])
+  @command_response = MiniKickstarterCLI.parse_and_invoke(@db, ["back",
+                                                                @given_name,
+                                                                @project_name,
+                                                                @credit_card_number,
+                                                                @backing_amount])
 end
 
 When(/^the "back" command is invoked successfully$/) do
   @db ||= MiniKickstarterDB.new(':memory:')
 
-  @command_response = MiniKickstarter.new.parse_and_invoke(@db, ["back",
-                                                                 @given_name,
-                                                                 @project_name,
-                                                                 @credit_card_number,
-                                                                 @backing_amount])
+  @command_response = MiniKickstarterCLI.parse_and_invoke(@db, ["back",
+                                                                @given_name,
+                                                                @project_name,
+                                                                @credit_card_number,
+                                                                @backing_amount])
 end
