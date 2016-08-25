@@ -20,6 +20,12 @@ Given(/^a project has been created$/) do
   step 'the "project" command is invoked successfully'
 end
 
+Given(/^a project called "([^"]*)" has been created with a target dollar amount of \$(.*)$/) do |project_name, target_dollar_amount|
+  step %Q{a project called "#{project_name}"}
+  step %Q{a target dollar amount of "#{target_dollar_amount}"}
+  step %Q{the "project" command is invoked successfully}
+end
+
 When(/^the "project" command is invoked$/) do
   @db ||= MiniKickstarterDB.new(':memory:')
 

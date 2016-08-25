@@ -13,7 +13,7 @@ Feature: "list" command
     """
 
   Scenario: Report that a project is successful when it is fully funded
-    Given a project has been created
+    Given a project called "Awesome_Sauce" has been created with a target dollar amount of $500.00
     And a project has been backed by "John" for $50.00 with card number 79927398713
     And a project has been backed by "Jane" for $50.00 with card number 79927398721
     And a project has been backed by "Mary" for $400.00 with card number 79927398739
