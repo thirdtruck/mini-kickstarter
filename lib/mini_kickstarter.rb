@@ -123,10 +123,10 @@ class MiniKickstarter
   def invoke_backer(db, command_params)
     given_name = command_params[:given_name]
 
-    names_and_amounts = db.find_project_names_backing_amounts_by_given_name(given_name)
+    names_and_amounts = db.find_project_names_backing_dollar_amounts_by_given_name(given_name)
 
     response = names_and_amounts.map do |nam|
-      "-- Backed #{nam[0]} for $#{as_dollars_and_cents(nam[1])}"
+      "-- Backed #{nam[:project_name]} for $#{as_dollars_and_cents(nam[:backing_dollar_amount])}"
     end.join("\n")
 
     response

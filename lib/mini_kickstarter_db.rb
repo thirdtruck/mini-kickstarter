@@ -45,8 +45,9 @@ class MiniKickstarterDB
     @db.execute('select * from backings where project_id = ?', project_id)
   end
 
-  def find_project_names_backing_amounts_by_given_name(given_name)
-    @db.execute('select projects.project_name, backings.backing_dollar_amount from backings join projects on projects.id = backings.project_id where backings.given_name = ?', given_name)
+  def find_project_names_backing_dollar_amounts_by_given_name(given_name)
+    rows = @db.execute('select projects.project_name, backings.backing_dollar_amount from backings join projects on projects.id = backings.project_id where backings.given_name = ?', given_name)
+    rows.map { |row| { project_name: row[0], backing_dollar_amount: row[1] } }
   end
 
   private
