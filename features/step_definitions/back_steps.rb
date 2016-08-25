@@ -1,5 +1,5 @@
 Given(/^a valid given name$/) do
-  @given_name = "example"
+  @given_name = "Jane"
 end
 
 Given(/^a valid credit card number$/) do
@@ -8,7 +8,7 @@ Given(/^a valid credit card number$/) do
 end
 
 Given(/^a valid backing amount$/) do
-  @backing_amount = "9.95"
+  @backing_amount = "50.00"
 end
 
 Given(/^a given name of "([^"]*)"$/) do |given_name|
@@ -40,6 +40,8 @@ Given(/^a project has been backed$/) do
 end
 
 When(/^the "back" command is invoked$/) do
+  @db ||= MiniKickstarterDB.new(':memory:')
+
   mini_kickstarter = MiniKickstarter.new
   begin
     @command_response = mini_kickstarter.invoke(@db,
