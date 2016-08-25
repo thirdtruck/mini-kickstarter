@@ -29,23 +29,11 @@ end
 When(/^the "project" command is invoked$/) do
   @db ||= MiniKickstarterDB.new(':memory:')
 
-  mini_kickstarter = MiniKickstarter.new
-  begin
-    @command_response = mini_kickstarter.invoke(@db,
-                                                "project",
-                                                project_name: @project_name,
-                                                target_dollar_amount: @target_dollar_amount)
-  rescue MiniKickstarter::InvalidCommandParameterError => e
-    @command_response = "ERROR: #{e.message}"
-  end
+  @command_response = MiniKickstarter.new.parse_and_invoke(@db, ["project", @project_name, @target_dollar_amount])
 end
 
 When(/^the "project" command is invoked successfully$/) do
   @db ||= MiniKickstarterDB.new(':memory:')
 
-  mini_kickstarter = MiniKickstarter.new
-  mini_kickstarter.invoke(@db,
-                          "project",
-                          project_name: @project_name,
-                          target_dollar_amount: @target_dollar_amount)
+  @command_response = MiniKickstarter.new.parse_and_invoke(@db, ["project", @project_name, @target_dollar_amount])
 end

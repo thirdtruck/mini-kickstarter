@@ -42,6 +42,8 @@ class MiniKickstarter
     end
   end
 
+  private
+
   def invoke(db, command_name, command_params)
     # TODO: Compile all errors before reporting instead of reporting only the first match. Better UX.
     case command_name
@@ -60,8 +62,6 @@ class MiniKickstarter
 
   class InvalidCommandParameterError < StandardError
   end
-
-  private
 
   def invoke_project(db, command_params)
     project_name = command_params[:project_name]

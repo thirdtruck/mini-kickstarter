@@ -48,27 +48,19 @@ end
 When(/^the "back" command is invoked$/) do
   @db ||= MiniKickstarterDB.new(':memory:')
 
-  mini_kickstarter = MiniKickstarter.new
-  begin
-    @command_response = mini_kickstarter.invoke(@db,
-                                                "back",
-                                                given_name: @given_name,
-                                                project_name: @project_name,
-                                                credit_card_number: @credit_card_number,
-                                                backing_amount: @backing_amount)
-  rescue MiniKickstarter::InvalidCommandParameterError => e
-    @command_response = "ERROR: #{e.message}"
-  end
+  @command_response = MiniKickstarter.new.parse_and_invoke(@db, ["back",
+                                                                 @given_name,
+                                                                 @project_name,
+                                                                 @credit_card_number,
+                                                                 @backing_amount])
 end
 
 When(/^the "back" command is invoked successfully$/) do
   @db ||= MiniKickstarterDB.new(':memory:')
 
-  mini_kickstarter = MiniKickstarter.new
-  mini_kickstarter.invoke(@db,
-                          "back",
-                          given_name: @given_name,
-                          project_name: @project_name,
-                          credit_card_number: @credit_card_number,
-                          backing_amount: @backing_amount)
+  @command_response = MiniKickstarter.new.parse_and_invoke(@db, ["back",
+                                                                 @given_name,
+                                                                 @project_name,
+                                                                 @credit_card_number,
+                                                                 @backing_amount])
 end
