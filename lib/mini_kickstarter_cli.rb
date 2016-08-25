@@ -1,4 +1,4 @@
-require 'mini_kickstarter'
+require_relative 'mini_kickstarter'
 
 class MiniKickstarterCLI
   def self.parse_and_invoke(db, arguments)

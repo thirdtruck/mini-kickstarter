@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
-require_relative '../lib/mini_kickstarter'
 require_relative '../lib/mini_kickstarter_db'
+require_relative '../lib/mini_kickstarter_cli'
 
 db = MiniKickstarterDB.new('projects.db')
 
-puts MiniKickstarter.new.parse_and_invoke(db, ARGV)
+puts MiniKickstarterCLI.parse_and_invoke(db, ARGV)
