@@ -14,6 +14,7 @@ class MiniKickstarterCLI
         target_dollar_amount: arguments[1]
       }
     when "back"
+      raise MissingCommandParameterError if arguments.length < 4
       {
         given_name: arguments[0],
         project_name: arguments[1],

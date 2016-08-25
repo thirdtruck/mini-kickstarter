@@ -175,3 +175,9 @@ Feature: "back" command
     And the credit card number "79927398713" has already been entered
     When the "back" command is invoked
     Then Mini Kickstarter should respond with "ERROR: That card has already been added by another user!"
+
+  Scenario: Complain if a parameter is missing
+    # No arguments given
+    When the "back" command is invoked
+    Then Mini Kickstarter should respond with "ERROR: Missing parameter(s)"
+
