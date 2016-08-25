@@ -8,3 +8,5 @@ Feature: "backer" command
     """
     -- Backed Awesome_Sauce for $50
     """
+
+  # TODO: Should we list each backing separately or the grand total?
