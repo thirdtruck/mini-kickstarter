@@ -51,11 +51,19 @@ Feature: "project" command
       | thí_dụthí_dụthí_dụthí | ERROR: Projects should be no shorter than 4 characters but no longer than 20 characters. |
 
   # TODO: Clarify whether this MUST accept BOTH dollars and cents or whether just dollars would suffice.
-  Scenario: Target dollar amounts should accept both dollars and cents
+  Scenario Outline: Target dollar amounts should accept both dollars and cents
     Given a project with a valid name
-    And a target dollar amount of "1000000.00"
+    And a target dollar amount of "<amount>"
     When the "project" command is invoked
     Then Mini Kickstarter should accept the command input
+
+    Examples:
+      | amount   |
+      |        1 |
+      |     1.00 |
+      |    19.95 |
+      |      500 |
+      |  1000000 |
 
   Scenario: Target dollar amounts cannot have the $ currency symbol
     Given a project with a valid name
