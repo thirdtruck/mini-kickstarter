@@ -37,3 +37,10 @@ $ ./bin/mini_kickstarter list
 -- Mary backed for $400
 Awesome_Sauce is successful!
 ```
+
+## Testing
+
+```bash
+bundle exec cucumber
+```
+
