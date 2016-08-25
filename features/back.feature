@@ -60,14 +60,22 @@ Feature: "back" command
       | thí_dụthí_dụthí_dụthí | ERROR: Given names should be no shorter than 4 characters but no longer than 20 characters. |
 
   # TODO: Clarify whether this MUST accept BOTH dollars and cents or whether just dollars would suffice.
-  Scenario: Backing amounts should accept both dollars and cents
+  Scenario Outline: Backing amounts should accept both dollars and cents
     Given a valid given name
     And a project with a valid name
     And a valid credit card number
     And a valid backing amount
-    And a backing amount of "1000000.00"
+    And a backing amount of "<amount>"
     When the "back" command is invoked
     Then Mini Kickstarter should accept the command input
+
+    Examples:
+      | amount   |
+      |        1 |
+      |     1.00 |
+      |    19.95 |
+      |      500 |
+      |  1000000 |
 
   Scenario: Backing amounts cannot have the $ currency symbol
     Given a valid given name
