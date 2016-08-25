@@ -48,8 +48,9 @@ class MiniKickstarter
     elsif target_dollar_amount !~ JUST_DOLLARS_AND_CENTS
       raise InvalidCommandParameterError, "Target dollar amount should include both dollars and cents."
     else
-      db.create_project(project_name, dollars_and_cents_to_int(target_dollar_amount)) # TODO: Extract conversion method
-      "Success"
+      amount_as_int = dollars_and_cents_to_int(target_dollar_amount)
+      db.create_project(project_name, amount_as_int)
+      "Added #{project_name} project with target of $#{as_dollars_and_cents(amount_as_int)}"
     end
   end
 
