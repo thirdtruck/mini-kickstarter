@@ -3,7 +3,6 @@ Given(/^a valid given name$/) do
 end
 
 Given(/^a valid credit card number$/) do
-  # TODO: Use a number that passes Luhn-10 below
   @credit_card_number = "79927398713"
 end
 
@@ -36,6 +35,14 @@ Given(/^a project has been backed$/) do
   step %Q{a valid given name}
   step %Q{a valid credit card number}
   step %Q{a valid backing amount}
+  step %Q{the "back" command is invoked}
+end
+
+Given(/^a project has been backed by "([^"]*)" for \$(.*) with card number (\d*)$/) do |given_name, backing_amount, credit_card_number|
+  step %Q{a project has been created}
+  step %Q{a given name of "#{given_name}"}
+  step %Q{a credit card number of "#{credit_card_number}"}
+  step %Q{a backing amount of "#{backing_amount}"}
   step %Q{the "back" command is invoked}
 end
 
