@@ -6,7 +6,7 @@ class MiniKickstarter
   # TODO: Move checks into the option parser. Take only pre-vetted input.
   NUMERIC = /\A[0-9]+\z/
   ALPHANUMERIC_WITH_UNDERSCORES_DASHES = /\A[[:alnum:]_-]*[[:alnum:]]+[[:alnum:]_-]*\z/
-  JUST_DOLLARS_AND_CENTS = /\A([1-9][0-9]*|[0-9])\.[0-9]{2}\z/
+  JUST_DOLLARS_AND_CENTS = /\A(0|[1-9][0-9]*|([1-9][0-9]*|[0-9])\.[0-9]{2})\z/
 
   def invoke(db, command_name, command_params)
     # TODO: Compile all errors before reporting instead of reporting only the first match. Better UX.

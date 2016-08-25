@@ -64,7 +64,6 @@ Feature: "back" command
     Given a valid given name
     And a project with a valid name
     And a valid credit card number
-    And a valid backing amount
     And a backing amount of "<amount>"
     When the "back" command is invoked
     Then Mini Kickstarter should accept the command input
@@ -77,13 +76,18 @@ Feature: "back" command
       |      500 |
       |  1000000 |
 
-  Scenario: Backing amounts cannot have the $ currency symbol
+  Scenario Outline: Backing amounts cannot have the $ currency symbol
     Given a valid given name
     And a project with a valid name
     And a valid credit card number
-    And a backing amount of "$1000000.00"
+    And a backing amount of "<amount>"
     When the "back" command is invoked
     Then Mini Kickstarter should respond with "ERROR: Target dollar amount should not use the $ currency symbol."
+
+    Examples:
+      | amount   |
+      | $1000000 |
+      | $1000.00 |
 
   Scenario Outline: Backing amounts should not accept amounts with missing or extra digits
     Given a valid given name
