@@ -46,7 +46,7 @@ class MiniKickstarter
     elsif target_dollar_amount =~ /\$/
       raise InvalidCommandParameterError, "Target dollar amount should not use the $ currency symbol"
     elsif target_dollar_amount !~ JUST_DOLLARS_AND_CENTS
-      raise InvalidCommandParameterError, "Target dollar amount should include both dollars and cents"
+      raise InvalidCommandParameterError, "Target dollar amount is invalid"
     else
       amount_as_int = dollars_and_cents_to_int(target_dollar_amount)
       db.create_project(project_name, amount_as_int)
@@ -78,7 +78,7 @@ class MiniKickstarter
     elsif backing_amount =~ /\$/
       raise InvalidCommandParameterError, "Target dollar amount should not use the $ currency symbol"
     elsif backing_amount !~ JUST_DOLLARS_AND_CENTS
-      raise InvalidCommandParameterError, "Target dollar amount should include both dollars and cents"
+      raise InvalidCommandParameterError, "Target dollar amount is invalid"
     else
       begin
         amount_as_int = dollars_and_cents_to_int(backing_amount)

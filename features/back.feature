@@ -98,11 +98,11 @@ Feature: "back" command
     Then Mini Kickstarter should respond with "<message>"
 
     Examples:
-      | amount | message                                                           |
-      |  01.07 | ERROR: Target dollar amount should include both dollars and cents |
-      |    0.7 | ERROR: Target dollar amount should include both dollars and cents |
-      |     1. | ERROR: Target dollar amount should include both dollars and cents |
-      |     .7 | ERROR: Target dollar amount should include both dollars and cents |
+      | amount |                                message |
+      |  01.07 | ERROR: Target dollar amount is invalid |
+      |    0.7 | ERROR: Target dollar amount is invalid |
+      |     1. | ERROR: Target dollar amount is invalid |
+      |     .7 | ERROR: Target dollar amount is invalid |
 
   Scenario Outline: Credit card numbers may be up to 19 characters long
     Given a valid given name
