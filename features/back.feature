@@ -54,7 +54,7 @@ Feature: "back" command
       | name                  | message                                                                                     |
       | exa                   | ERROR: Given names should be no shorter than 4 characters but no longer than 20 characters. |
       | exam                  |                                                   exam backed project Awesome_Sauce for $50 |
-      | 20ampleexampleexampl  |                                  20ampleexampleexampl backed project Awesome_Sauce for $50 |
+      | 20ampleexampleexampl  |                                   20ampleexampleexampl backed project Awesome_Sauce for $50 |
       | 21ampleexampleexample | ERROR: Given names should be no shorter than 4 characters but no longer than 20 characters. |
       | thí                   | ERROR: Given names should be no shorter than 4 characters but no longer than 20 characters. |
       | thí_dụthí_dụthí_dụthí | ERROR: Given names should be no shorter than 4 characters but no longer than 20 characters. |
