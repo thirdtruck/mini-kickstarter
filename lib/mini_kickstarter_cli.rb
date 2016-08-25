@@ -34,4 +34,7 @@ class MiniKickstarterCLI
       "ERROR: #{e.message}"
     end
   end
+
+  class MissingCommandParameterError < StandardError
+  end
 end
