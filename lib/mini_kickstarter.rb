@@ -17,6 +17,8 @@ class MiniKickstarter
       invoke_back(db, command_params)
     when "list"
       invoke_list(db, command_params)
+    when "backer"
+      invoke_backer(db, command_params)
     else
       raise InvalidCommandParameterError, "Unrecognized command."
     end
@@ -114,6 +116,18 @@ class MiniKickstarter
     else
       response << "#{project_name} is successful!"
     end
+
+    response
+  end
+
+  def invoke_backer(db, command_params)
+    given_name = command_params[:given_name]
+
+    names_and_amounts = db.find_project_names_backing_amounts_by_given_name(given_name)
+
+    response = names_and_amounts.map do |nam|
+      "-- Backed #{nam[0]} for $#{as_dollars_and_cents(nam[1])}"
+    end.join("\n")
 
     response
   end
