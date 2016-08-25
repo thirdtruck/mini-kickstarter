@@ -1,4 +1,8 @@
+require 'credit_card'
+
 class MiniKickstarter
+  include CreditCard
+
   # TODO: Move checks into the option parser. Take only pre-vetted input.
   NUMERIC = /\A[0-9]+\z/
   ALPHANUMERIC_WITH_UNDERSCORES_DASHES = /\A[[:alnum:]_-]*[[:alnum:]]+[[:alnum:]_-]*\z/
@@ -50,7 +54,8 @@ class MiniKickstarter
   def invoke_back(db, command_params)
     given_name = command_params[:given_name]
     project_name = command_params[:project_name]
-    credit_card_number = command_params[:credit_card_number]
+    credit_card_number_string = command_params[:credit_card_number]
+    credit_card_number = credit_card_number_string.to_i
     backing_amount = command_params[:backing_amount]
 
     if given_name !~ ALPHANUMERIC_WITH_UNDERSCORES_DASHES
@@ -61,11 +66,11 @@ class MiniKickstarter
       raise InvalidCommandParameterError, "Projects should be alphanumeric. Underscores or dashes are allowed."
     elsif project_name.length < 4 || project_name.length > 20
       raise InvalidCommandParameterError, "Projects should be no shorter than 4 characters but no longer than 20 characters."
-    elsif credit_card_number.length > 19
+    elsif credit_card_number_string.length > 19
       raise InvalidCommandParameterError, "Credit card numbers should be no more than 19 characters."
-    elsif credit_card_number !~ NUMERIC
+    elsif credit_card_number_string !~ NUMERIC
       raise InvalidCommandParameterError, "Credit card numbers should contain only digits."
-    elsif ! valid_luhn_10_sequence?(credit_card_number.split(//).map(&:to_i))
+    elsif ! valid_credit_card_number?(credit_card_number)
       raise InvalidCommandParameterError, "Invalid credit card number." # TODO: What's a better error message?
     elsif backing_amount =~ /\$/
       raise InvalidCommandParameterError, "Target dollar amount should not use the $ currency symbol."
@@ -120,24 +125,5 @@ class MiniKickstarter
     else
       "#{dollars}.#{cents.to_s.rjust(2, '0')}"
     end
-  end
-
-  def valid_luhn_10_sequence?(digits)
-    odd_digits = []
-    even_digits = []
-
-    # TODO: Investigate more concise options.
-    digits.reverse.each_index do |index|
-      if (index+1) % 2 == 0
-        even_digits << digits[index]
-      else
-        odd_digits << digits[index]
-      end
-    end
-
-    total = odd_digits.reduce(&:+)
-    even_digits.each { |ed| total += (2*ed).to_s.split(//).map(&:to_i).reduce(&:+) }
-
-    (total % 10) == 0
   end
 end
