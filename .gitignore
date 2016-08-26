@@ -1,2 +1,5 @@
 # Ignore gems installed by Bundler
 /vendor
+
+# Ignore default database file
+projects.db
