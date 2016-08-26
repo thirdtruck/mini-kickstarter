@@ -38,6 +38,8 @@ class MiniKickstarterDB
                 backing_amount)
   end
 
+  # Explicit field mapping to hide positional details from method consumers.
+
   def find_project_by_project_name(project_name)
     row = @db.get_first_row('select * from projects where project_name = ?', project_name)
     return {
