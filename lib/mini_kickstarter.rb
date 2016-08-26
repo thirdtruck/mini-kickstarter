@@ -4,7 +4,11 @@ class MiniKickstarter
   include CreditCard
 
   # TODO: Separate out reporting code from non-reporting code.
-  # TODO: Refactor to be more east-oriented (http://www.saturnflyer.com/blog/jim/2015/02/10/the-4-rules-of-east-oriented-code-rule-1/)
+  # TODO: Refactor to be more east-oriented.
+  # (http://www.saturnflyer.com/blog/jim/2015/02/10/the-4-rules-of-east-oriented-code-rule-1/)
+
+  # Some of these commands could get away with positional arguments instead of named ones,
+  # but maintaining a consistent interface takes priority.
 
   def invoke_project(db, command_params)
     project_name = command_params[:project_name]
