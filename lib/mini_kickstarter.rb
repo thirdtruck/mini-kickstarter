@@ -3,27 +3,6 @@ require_relative 'credit_card'
 class MiniKickstarter
   include CreditCard
 
-  def invoke(db, command_name, command_params)
-    # TODO: Compile all errors before reporting instead of reporting only the first match. Better UX.
-    case command_name
-    when "project"
-      invoke_project(db, command_params)
-    when "back"
-      invoke_back(db, command_params)
-    when "list"
-      invoke_list(db, command_params)
-    when "backer"
-      invoke_backer(db, command_params)
-    else
-      raise InvalidCommandParameterError, "Unrecognized command"
-    end
-  end
-
-  class InvalidCommandParameterError < StandardError
-  end
-
-  private
-
   # TODO: Move checks into the option parser. Take only pre-vetted input.
   NUMERIC = /\A[0-9]+\z/
   ALPHANUMERIC_WITH_UNDERSCORES_DASHES = /\A[[:alnum:]_-]*[[:alnum:]]+[[:alnum:]_-]*\z/
@@ -133,6 +112,11 @@ class MiniKickstarter
 
     response
   end
+
+  class InvalidCommandParameterError < StandardError
+  end
+
+  private
 
   def dollars_and_cents_to_int(amount_string)
     (amount_string.to_f * 100).to_i

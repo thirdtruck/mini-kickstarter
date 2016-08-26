@@ -12,39 +12,36 @@ class MiniKickstarterCLI
 
     when "project"
       raise MissingCommandParameterError if arguments.length < 2
-      {
-        project_name: arguments[0],
-        target_dollar_amount: arguments[1]
-      }
+      MiniKickstarter.new.invoke_project(db,
+                                         project_name: arguments[0],
+                                         target_dollar_amount: arguments[1])
     when "back"
       raise MissingCommandParameterError if arguments.length < 4
-      {
-        given_name: arguments[0],
-        project_name: arguments[1],
-        credit_card_number: arguments[2],
-        backing_amount: arguments[3]
-      }
+      MiniKickstarter.new.invoke_back(db,
+                                      given_name: arguments[0],
+                                      project_name: arguments[1],
+                                      credit_card_number: arguments[2],
+                                      backing_amount: arguments[3])
     when "list"
       raise MissingCommandParameterError if arguments.length < 1
-      {
-        project_name: arguments[0]
-      }
+      MiniKickstarter.new.invoke_list(db, project_name: arguments[0])
     when "backer"
       raise MissingCommandParameterError if arguments.length < 1
-      {
-        given_name: arguments[0],
-      }
-    end
-
-    begin
-      MiniKickstarter.new.invoke(db, command_name, command_params)
-    rescue StandardError => e
-      "ERROR: #{e.message}"
+      MiniKickstarter.new.invoke_backer(db, given_name: arguments[0])
+    else
+      raise UnrecognizedCommandError, "Unrecognized command"
     end
   rescue MissingCommandParameterError => e
     "ERROR: Missing parameter(s)"
+  rescue StandardError => e
+    "ERROR: #{e.message}"
   end
 
+  private
+
   class MissingCommandParameterError < StandardError
+  end
+
+  class UnrecognizedCommandError < StandardError
   end
 end
