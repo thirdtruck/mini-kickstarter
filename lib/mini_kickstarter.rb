@@ -3,11 +3,6 @@ require_relative 'credit_card'
 class MiniKickstarter
   include CreditCard
 
-  # TODO: Move checks into the option parser. Take only pre-vetted input.
-  NUMERIC = /\A[0-9]+\z/
-  ALPHANUMERIC_WITH_UNDERSCORES_DASHES = /\A[[:alnum:]_-]*[[:alnum:]]+[[:alnum:]_-]*\z/
-  JUST_DOLLARS_AND_CENTS = /\A(0|[1-9][0-9]*|([1-9][0-9]*|[0-9])\.[0-9]{2})\z/
-
   def invoke_project(db, command_params)
     project_name = command_params[:project_name]
     target_dollar_amount = command_params[:target_dollar_amount]
@@ -117,6 +112,11 @@ class MiniKickstarter
   end
 
   private
+
+  # TODO: Move checks into the option parser. Take only pre-vetted input.
+  NUMERIC = /\A[0-9]+\z/
+  ALPHANUMERIC_WITH_UNDERSCORES_DASHES = /\A[[:alnum:]_-]*[[:alnum:]]+[[:alnum:]_-]*\z/
+  JUST_DOLLARS_AND_CENTS = /\A(0|[1-9][0-9]*|([1-9][0-9]*|[0-9])\.[0-9]{2})\z/
 
   def dollars_and_cents_to_int(amount_string)
     (amount_string.to_f * 100).to_i
