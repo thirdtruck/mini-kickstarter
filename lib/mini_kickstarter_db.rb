@@ -15,6 +15,7 @@ class MiniKickstarterDB
     @db.execute('insert into projects values(?, ?, ?);', nil, project_name, target_dollar_amount)
   end
 
+  # If this project grows any more complicated, I'd replace all of these custom searches with ActiveRecord.
   def find_project_id_by_project_name(project_name)
     @db.get_first_value('select id from projects where project_name = ?', project_name)
   end
