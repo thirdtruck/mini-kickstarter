@@ -3,6 +3,9 @@ require_relative 'credit_card'
 class MiniKickstarter
   include CreditCard
 
+  # TODO: Separate out reporting code from non-reporting code.
+  # TODO: Refactor to be more east-oriented (http://www.saturnflyer.com/blog/jim/2015/02/10/the-4-rules-of-east-oriented-code-rule-1/)
+
   def invoke_project(db, command_params)
     project_name = command_params[:project_name]
     target_dollar_amount = command_params[:target_dollar_amount]
