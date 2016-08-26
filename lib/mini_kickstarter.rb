@@ -82,9 +82,6 @@ class MiniKickstarter
     backing_amounts = backings.map { |backing| backing[:backing_dollar_amount] }
 
     unbacked_amount = target_dollar_amount - backing_amounts.reduce(:+)
-    if unbacked_amount < 0
-      unbacked_amount = 0
-    end
 
     response = ''
 
