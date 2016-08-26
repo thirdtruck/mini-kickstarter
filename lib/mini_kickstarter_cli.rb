@@ -4,6 +4,7 @@ require_relative 'mini_kickstarter'
 # in order to keep concerns separated. Sets us up to use more advanced
 # command option management code later, too, like named parameters.
 class MiniKickstarterCLI
+  # TODO: Not satisfied with method names that include "and". Open to alternatives.
   def self.parse_and_invoke(db, original_arguments)
     arguments = original_arguments.compact
     command_name = arguments.shift # Shifting to simplify counting/indexing below
